@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Main', function () {
-  var React = require('react/addons');
+  var React = require('react');
   var ReactWebpackApp, component;
 
   beforeEach(function () {
@@ -9,11 +9,11 @@ describe('Main', function () {
     container.id = 'content';
     document.body.appendChild(container);
 
-    ReactWebpackApp = require('components/ReactWebpackApp.js');
+    ReactWebpackApp = require('components/App.js');
     component = React.createElement(ReactWebpackApp);
   });
 
-  it('should create a new instance of ReactWebpackApp', function () {
+  it('should create a new instance of App', function () {
     expect(component).toBeDefined();
   });
 });
