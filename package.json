@@ -7,7 +7,7 @@
   "src": "src",
   "test": "test",
   "dist": "dist",
-  "mainInput": "ReactWebpackApp",
+  "mainInput": "App",
   "mainOutput": "main",
   "dependencies": {
     "react": "~0.12.2"

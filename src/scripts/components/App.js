@@ -8,7 +8,7 @@ var App = React.createClass({
   render: function() {
     return (
       <div className='app'>
-        <h1>this is a h1 tag</h1>
+        <h1>hello world!</h1>
       </div>
     );
   }

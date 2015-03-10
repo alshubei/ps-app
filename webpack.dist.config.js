@@ -18,7 +18,7 @@ module.exports = {
 
   debug: false,
   devtool: false,
-  entry: './src/scripts/components/ReactWebpackApp.js',
+  entry: './src/scripts/components/App.js',
 
   stats: {
     colors: true,
