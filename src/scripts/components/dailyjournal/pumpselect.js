@@ -15,7 +15,7 @@ var Pumpselect = React.createClass({
         }.bind(this));
         return (
             <div>
-                <select  onChange={this.props.onChange}>
+                <select  value={this.props.value} onChange={this.props.onChange}>
                 {pumps}
                 </select>
                  <span className="label label-default">{this.props.pump.fuel},  {this.props.pump.literprice}/Liter </span>

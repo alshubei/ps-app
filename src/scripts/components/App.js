@@ -2,16 +2,21 @@
 
 var React = require('react');
 var Dispenser = require('../../scripts/components/dailyjournal/dispenser.js');
+var Modal = require('../../scripts/components/common/modal.js');
 var l = require('../../scripts/loader.js');
 
 var App = React.createClass({
     render: function () {
+
         return (
-            <div className='container' id="container">
+            <div className='container' >
                 <l.Pageheader />
                 <l.Panel title={l.dict.journal}>
                 {[
-                    <Dispenser />,
+                    <button className="btn btn-primary"  data-toggle="modal" data-target=".add-dispenser-modal">
+                    +
+                    </button>,
+                    <Dispenser modalLink={'add-dispenser-modal'}/>,
                     <l.Dailyjournal />
 
                 ]}

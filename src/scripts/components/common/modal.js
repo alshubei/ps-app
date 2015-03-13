@@ -9,13 +9,10 @@ require('../../bootstrap.js');
 var Modal =
     React.createClass({
         render: function () {
+            var modalLink = 'modal fade ' + this.props.modalLink;
             return (
                 <div>
-                    <button className="btn btn-primary"  data-toggle="modal" data-target=".bs-example-modal-lg">
-                    +
-                    </button>
-
-                    <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div className={modalLink} tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content">
                                 <div className="modal-header">

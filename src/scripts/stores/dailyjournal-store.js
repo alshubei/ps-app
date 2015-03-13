@@ -1,48 +1,57 @@
-var Actions = require('../actions/dispenser-actions.js');
+var Dispenseractions = require('../actions/dispenser-actions.js');
 var pumpStores = require('../stores/pumps-store.js');
 var Reflux = require('reflux');
 var _ = require('underscore');
 
 var dailyJournalStore = Reflux.createStore({
     init: function () {
-        this.listenToMany(Actions);
+        this.listenToMany(Dispenseractions);
     },
     getDailyJournal: function () {
-        return{data: _dailyJournal}
+        return{data: _dailyJournal, journalResults: _journalresults};
     },
-    addEntry: function (item) {
-        var pumpId = item.pump;
-        var pump = pumpStores.getPump(pumpId);
+    getJournalResults: function () {
+        return _journalresults;
+    },
+    addEntry: function (dispenser) {
+        var pump = dispenser.pump;
         var fuel = pump.fuel;
-        //{liters: 0, subtotal: 0, pump: 'p1', prevCounter: 0, curCounter: 0 }
-        var prevCtr = item.prevCounter;
-        var curCtr = item.curCounter;
-        var subtotal = item.subtotal;
+        var subtotal = dispenser.subtotal;
 
-        //to group by fuel, ensure this entry is added new or aggregated respectively
-        if (_isAdded(fuel)) {
-            var it = _.findWhere(_dailyJournal, {fuel: fuel});
-            if (it) {
-                it.counters.prevCtr = prevCtr + it.counters.prevCtr;
-                it.counters.curCtr = curCtr + it.counters.curCtr;
-                it.dueAmount = subtotal + it.dueAmount;
+        //to group by fuel, ensure this dispenser entry is being added new or aggregated respectively via fuel type
+        var isFuelAdded = _.findWhere(_dailyJournal, {fuel: fuel}) !== undefined;
+        if (isFuelAdded) {
+            var found = _.findWhere(_dailyJournal, {fuel: fuel});
+            if (found) {
+                //add a new dispenser
+                found.dispensers.push(dispenser);
             }
 
         } else {
-            _dailyJournal.push({fuel: fuel, counters: {prevCtr: prevCtr, curCtr: curCtr}, dueAmount: subtotal});
+            _dailyJournal.push({fuel: fuel, dispensers: [dispenser], dueAmount: _calcDueAmount([dispenser])});
         }
-        this.trigger(it);
+        _journalresults = _.reduce(_dailyJournal, function (memo, dispenser) {
+            return dispenser.dueAmount + memo;
+        }, 0);
+
+        this.trigger(dispenser);
 
     }
 });
 
 var _dailyJournal =
     [
-        //{fuel: 'Petrol', counters: {prevCtr: 292212, curCtr: 299999}, dueAmount: 000}
+        //{fuel: 'Petrol', counters: {prevCtr: 292212, curCtr: 299999}, dueAmount: 000, totalAmount: 000}, {fuel: 'Diesel', ..}, ...
+        //better= {fuel: 'Petrol', dispensers: [{},{}] }
     ];
 
-function _isAdded(fuel) {
-    return  _.findWhere(_dailyJournal, {fuel: fuel})!== undefined;
+var _journalresults = 0;
+
+function _calcDueAmount(dispensers) {
+    return _.reduce(dispensers, function (memo, item) {
+        return memo + item.subtotal;
+    }, 0);
 }
+
 
 module.exports = dailyJournalStore;

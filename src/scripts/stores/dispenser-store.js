@@ -1,6 +1,6 @@
 //var Actions = require('../actions/pumps-actions.js');
 var Reflux = require('reflux');
-var ps = require('../../scripts/stores/pumps-store.js');
+var pumpsStore = require('../../scripts/stores/pumps-store.js');
 var dispenserActions = require('../../scripts/actions/dispenser-actions.js');
 
 var Dispenserstore = Reflux.createStore({
@@ -8,16 +8,20 @@ var Dispenserstore = Reflux.createStore({
         this.listenToMany(dispenserActions);
     },
     addEntry: function (item) {
-        //{liters: 0, subtotal: 0, pump: 'p1', prevCounter: 0, curCounter: 0 }
 
-        //console.log(item);
     },
-    calcSubtotals: function (pumpId, prevValue, currentValue) {
+    getDispenserData: function () {
+      return _dispenserData;
+    },
+    calcSubtotals: function (pump, prevValue, currentValue) {
         var liters = currentValue - prevValue;
-        var literPrice = ps.getLiterPrice(pumpId);
+        var literPrice = pumpsStore.getLiterPrice(pump);
         var subtotal = literPrice * liters;
         return {liters: liters, subtotal: subtotal};
     }
 });
+
+var _dispenserData = {liters: 0, subtotal: 0, pump: pumpsStore.getDefaultPump(), prevCounter: 0, curCounter: 0 };
+
 
 module.exports = Dispenserstore;
