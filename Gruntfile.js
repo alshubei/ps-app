@@ -63,7 +63,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 path: 'http://localhost:<%= connect.options.port %>/'
-           }
+            }
         },
 
         karma: {

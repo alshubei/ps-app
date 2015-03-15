@@ -2,23 +2,27 @@
 
 var React = require('react');
 
-var pumpsStore = require('../../stores/pumps-store.js');
+var PumpsStore = require('../../stores/pumps-store.js');
+var Dict = require('../common/dict.js');
 
 
 var Pumpselect = React.createClass({
     getInitialState: function () {
-        return {pumps: pumpsStore.getPumpList()};
+        return {pumps: PumpsStore.getPumpList()};
     },
     render: function () {
-        var pumps = this.state.pumps.map(function (item) {
-            return <option value={item.id}>{item.id}</option>
+        var pumps = this.state.pumps.map(function (item, i) {
+            return <option key={i} value={item.id}>{item.id}</option>
         }.bind(this));
         return (
             <div>
-                <select  value={this.props.value} onChange={this.props.onChange}>
-                {pumps}
-                </select>
-                 <span className="label label-default">{this.props.pump.fuel},  {this.props.pump.literprice}/Liter </span>
+                <div>{this.props.title}</div>
+                <div>
+                    <select   value={this.props.value} onChange={this.props.onChange}>
+                        {pumps}
+                    </select>
+                </div>
+                <div className="label label-default">{this.props.pump.fuel},  {this.props.pump.literprice}/{Dict.liter} </div>
             </div>
             )
     }

@@ -1,57 +1,67 @@
-var Dispenseractions = require('../actions/dispenser-actions.js');
+var DailyJournalActions = require('../actions/dailyjournal-actions.js');
+var DispenserActions = require('../actions/dispenser-actions.js');
 var pumpStores = require('../stores/pumps-store.js');
 var Reflux = require('reflux');
 var _ = require('underscore');
 
 var dailyJournalStore = Reflux.createStore({
-    init: function () {
-        this.listenToMany(Dispenseractions);
-    },
-    getDailyJournal: function () {
-        return{data: _dailyJournal, journalResults: _journalresults};
-    },
-    getJournalResults: function () {
-        return _journalresults;
-    },
-    addEntry: function (dispenser) {
-        var pump = dispenser.pump;
-        var fuel = pump.fuel;
-        var subtotal = dispenser.subtotal;
-
-        //to group by fuel, ensure this dispenser entry is being added new or aggregated respectively via fuel type
-        var isFuelAdded = _.findWhere(_dailyJournal, {fuel: fuel}) !== undefined;
-        if (isFuelAdded) {
-            var found = _.findWhere(_dailyJournal, {fuel: fuel});
-            if (found) {
-                //add a new dispenser
-                found.dispensers.push(dispenser);
-            }
-
+    listenables: [DispenserActions, DailyJournalActions],
+    saveDispenser: function (dispenser) {
+        if (dispenser.editing) {
+            delete dispenser.editing;
+            _dispensers[dispenser.index] = dispenser;
         } else {
-            _dailyJournal.push({fuel: fuel, dispensers: [dispenser], dueAmount: _calcDueAmount([dispenser])});
+            _dispensers.push(dispenser);
         }
-        _journalresults = _.reduce(_dailyJournal, function (memo, dispenser) {
-            return dispenser.dueAmount + memo;
-        }, 0);
 
         this.trigger(dispenser);
+    },
+    removeJournal: function (fuel) {
+        _dispensers = _.filter(_dispensers, function (d) {
+            return d.pump.fuel !== fuel;
+        });
+        this.trigger(fuel);
+    },
+    removeDispenser: function (key) {
+        _dispensers.splice(key, 1);
+        this.trigger(key);
+    },
+    getJournals: function () {
+        var journals = _.chain(_dispensers).groupBy(function (o) {
+            return o.pump.fuel;
+        }).pairs().value();
+        return journals;
+    },
+    getDispensers: function () {
+        return {dispensers: _dispensers}
+    },
+    pprint: function (json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
 
     }
 });
 
-var _dailyJournal =
-    [
-        //{fuel: 'Petrol', counters: {prevCtr: 292212, curCtr: 299999}, dueAmount: 000, totalAmount: 000}, {fuel: 'Diesel', ..}, ...
-        //better= {fuel: 'Petrol', dispensers: [{},{}] }
-    ];
+var _dispensers = [
 
-var _journalresults = 0;
-
-function _calcDueAmount(dispensers) {
-    return _.reduce(dispensers, function (memo, item) {
-        return memo + item.subtotal;
-    }, 0);
-}
+];
 
 
 module.exports = dailyJournalStore;

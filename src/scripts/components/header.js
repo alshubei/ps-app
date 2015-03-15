@@ -6,7 +6,7 @@ var header = React.createClass({
   render: function() {
     return (
         <div className="page-header">
-            <h1>PS-App <small>prototype | Dispenser Pumps Journal</small></h1>
+            <h1>{this.props.title} <small>| {this.props.subTitle}</small></h1>
         </div>
     );
   }

@@ -1,38 +1,36 @@
 'use strict';
 
 var React = require('react');
-var Dailyjournalstore = require('../../stores/dailyjournal-store.js');
+var DailyJournalStore = require('../../stores/dailyjournal-store.js');
 var Journal = require('../../components/dailyjournal/journal.js');
-var Journalresults = require('../../components/dailyjournal/journalresults.js');
+var _ = require('underscore');
 
 var Dailyjournal = React.createClass({
     getInitialState: function () {
-        return Dailyjournalstore.getDailyJournal();
+        return DailyJournalStore.getDispensers();
     },
     componentDidMount: function () {
-        this.unsubscribe = Dailyjournalstore.listen(this.onChange);
+        this.unsubscribe = DailyJournalStore.listen(this.onChange);
     },
     componentWillUnmount: function () {
         this.unsubscribe();
     },
     render: function () {
-
-        var journals = this.state.data.map(function (item) {
-            return <Journal data={item} />;
+        //make journals out of dispensers
+        var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
+        var journals = journalsData.map(function (item, i) {
+            return <Journal index={i} data={item} />;
         });
 
         return (
-            <div>
-                <div className='row'>
-                {journals}
+                <div className='top10 row'>
+                    {journals}
                 </div>
-                <Journalresults data={this.state.journalResults} />
-            </div>
-
             )
+
     },
     onChange: function () {
-        this.setState(Dailyjournalstore.getDailyJournal());
+        this.setState(DailyJournalStore.getDispensers());
     }
 });
 

@@ -1,37 +1,54 @@
 'use strict';
 
 var React = require('react');
-var Modal = require('../../components/common/modal.js');
-var Journalstore = require('../../stores/journalstore.js');
+var JournalStore = require('../../stores/journal-store.js');
+var DailyJournalStore = require('../../stores/dailyjournal-store.js');
+var Dispenserlink = require('../../components/dailyjournal/dispenserlink.js');
+var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 
 var Journal = React.createClass({
+    getJournal: function () {
+        var data = this.props.data;
+        var journal = JournalStore.calculateJournal(data);
+        return journal;
+    },
     render: function () {
-        var data = Journalstore.calculateJournal(this.props.data);
+        var data = this.props.data;
+        var journal = this.getJournal();
+        var dispensers = data[1].map(function (item, i) {
+            return <Dispenserlink index={i} data={item}/>
+        });
         return (
-            <div className='col-xs-6 col-md-3' data-toggle="modal" data-target=".bs-example-modal-lg">
-                <a href='#' className='thumbnail'>
-                    <div className=''>
-                        <h3>{data.pump.fuel}</h3>
-                        <div>Prev:
-                            <span className="label label-default">{data.prevCounter}</span>
-                        </div>
-                        <div>Cur:
-                            <span className="label label-default">{data.curCounter}</span>
-                        </div>
-                        <div>Due Liters:
-                            <span className="label label-default">{data.liters}</span>
-                        </div>
-                        <div>Due Amount:
-                            <span className="label label-info">{data.subtotal}</span>
-                        </div>
-
+            <div key={this.props.index} className='col-xs-12 col-md-6 col-lg-3'>
+                <div  className='thumbnail'>
+                    <span className='close' onClick={this.removeJournal}>x</span>
+                    <h3>{journal.fuel}</h3>
+                    <div>Prev:
+                        <span className="label label-default">{journal.prevCounter}</span>
                     </div>
-                </a>
+                    <div>Cur:
+                        <span className="label label-default">{journal.curCounter}</span>
+                    </div>
+                    <div>Due Liters:
+                        <span className="label label-default">{journal.liters}</span>
+                    </div>
+                    <div>Due Amount:
+                        <span className="label label-info">{journal.subtotal}</span>
+                    </div>
+                    <br />
+                    <div className='thumbnail'>
+                        <div className='row'>
+                     {dispensers}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             )
+    },
+    removeJournal: function () {
+        DailyJournalActions.removeJournal(this.getJournal().fuel);
     }
 });
-
 
 module.exports = Journal;

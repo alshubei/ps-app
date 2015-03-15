@@ -1,6 +1,3 @@
-module.exports = {
-    'journal':'Journal',
-    'dispensercounters':'Dispenser Counters',
-    'previouscounter':0,
-    'currentcounter':0
-};
+
+module.exports = require('../common/dict_en.js');
+//module.exports = require('../common/dict_ar.js');

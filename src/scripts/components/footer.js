@@ -6,7 +6,7 @@ var footer = React.createClass({
   render: function() {
     return (
         <div className="page-footer">
-            <h3>PS-App <small>@Mokhtar.AlShubei</small></h3>
+            <h3>{this.props.title}<small>{this.props.subTitle}</small></h3>
         </div>
     );
   }

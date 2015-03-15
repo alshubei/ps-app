@@ -19,14 +19,14 @@ var Modal =
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 className="modal-title">Modal title</h4>
+                                    <h4 className="modal-title">{this.props.title}</h4>
                                 </div>
                                 <div className="modal-body">
                                 {this.props.children}
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.props.onSave}>Save changes</button>
+                                    <button type="button" className="btn btn-default" data-dismiss="modal">{this.props.closeCaption}</button>
+                                    <button type="button" className="btn  btn-primary" data-dismiss="modal" onClick={this.props.onSave}>{this.props.saveCaption}</button>
                                 </div>
                             </div>
                         </div>

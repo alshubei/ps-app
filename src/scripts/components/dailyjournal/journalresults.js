@@ -1,18 +1,18 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var Dailyjournalstore = require('../../stores/dailyjournal-store.js');
+var JournalResultsStore = require('../../stores/journalresults-store.js');
+var Dict = require('../common/dict.js');
 
 var Journalresults = React.createClass({
 
     render: function () {
+        var results = JournalResultsStore.getTotals(this.props.data);
         return (
-            <div>
-                <div className='row'>
-                    <strong>Total Amount: </strong>
-                    <span className='label label-primary'>{this.props.data}</span>
-                </div>
-            </div>
+            <span className='input-lg'>
+                <strong>{Dict.totalAmount}: </strong>
+                <span className='label label-primary'>{results}</span>
+            </span>
 
             )
     }

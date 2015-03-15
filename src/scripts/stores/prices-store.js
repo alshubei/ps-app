@@ -1,11 +1,11 @@
 
-//var Dispenseractions = require('../actions/pumps-actions.js');
+//var DispenserActions = require('../actions/pumps-actions.js');
 var Reflux = require('reflux');
 var _ = require('underscore');
 
 var pricesStore = Reflux.createStore({
     init: function () {
-        //this.listenToMany(Dispenseractions);
+        //this.listenToMany(DispenserActions);
     },
     getPrice: function (id) {
         return _getPrice(_fuelTypes,id);
