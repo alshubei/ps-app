@@ -16075,7 +16075,7 @@ var ExecutionEnvironment = require("./ExecutionEnvironment");
 
 /**
  * Detect if we can use window.performance.now() and gracefully
- * fallback to Date.now() if it doesn't exist.
+ * fallback to JDate.now() if it doesn't exist.
  * We need to support Firefox < 15 for now due to Facebook's webdriver
  * infrastructure.
  */

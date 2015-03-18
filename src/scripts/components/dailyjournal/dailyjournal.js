@@ -3,11 +3,12 @@
 var React = require('react');
 var DailyJournalStore = require('../../stores/dailyjournal-store.js');
 var Journal = require('../../components/dailyjournal/journal.js');
+var Debug = require('../../components/common/debug.js');
 var _ = require('underscore');
 
 var Dailyjournal = React.createClass({
     getInitialState: function () {
-        return DailyJournalStore.getDispensers();
+        return DailyJournalStore.getData();
     },
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
@@ -19,7 +20,7 @@ var Dailyjournal = React.createClass({
         //make journals out of dispensers
         var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
         var journals = journalsData.map(function (item, i) {
-            return <Journal index={i} data={item} />;
+            return <Journal key={i}   data={item} />;
         });
 
         return (
@@ -30,7 +31,7 @@ var Dailyjournal = React.createClass({
 
     },
     onChange: function () {
-        this.setState(DailyJournalStore.getDispensers());
+        this.setState(DailyJournalStore.getData());
     }
 });
 

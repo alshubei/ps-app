@@ -4,6 +4,7 @@ var React = require('react');
 var JournalStore = require('../../stores/journal-store.js');
 var DailyJournalStore = require('../../stores/dailyjournal-store.js');
 var Dispenserlink = require('../../components/dailyjournal/dispenserlink.js');
+var Debug = require('../../components/common/debug.js');
 var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 
 var Journal = React.createClass({
@@ -16,10 +17,10 @@ var Journal = React.createClass({
         var data = this.props.data;
         var journal = this.getJournal();
         var dispensers = data[1].map(function (item, i) {
-            return <Dispenserlink index={i} data={item}/>
+            return <Dispenserlink key={i}  data={item}/>
         });
         return (
-            <div key={this.props.index} className='col-xs-12 col-md-6 col-lg-3'>
+            <div  className='col-xs-12 col-md-6 col-lg-3'>
                 <div  className='thumbnail'>
                     <span className='close' onClick={this.removeJournal}>x</span>
                     <h3>{journal.fuel}</h3>

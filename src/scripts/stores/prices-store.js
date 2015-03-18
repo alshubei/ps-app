@@ -13,9 +13,10 @@ var pricesStore = Reflux.createStore({
 });
 
 var _fuelTypes = [
-    {id:'Petrol', price: 130},
-    {id:'Diesel', price: 120},
-    {id:'Gas', price: 70}
+    {id:'Petorl', price: 100},
+    {id:'Diesel', price: 80},
+    {id:'Kerosin', price: 60},
+    {id:'Gas', price: 45}
 ];
 
 var _getPrice = function (types, id) {

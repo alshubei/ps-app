@@ -15,6 +15,7 @@ module.exports = function (grunt) {
     var pkgConfig = grunt.file.readJSON('package.json');
 
     grunt.initConfig({
+
         pkg: pkgConfig,
         webpack: {
             options: webpackDistConfig,
@@ -141,8 +142,7 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        }
-    });
+        }});
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
@@ -161,4 +161,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', []);
 }
+
 ;

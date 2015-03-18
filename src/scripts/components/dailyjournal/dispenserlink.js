@@ -8,24 +8,34 @@ var Dispenserlink = React.createClass({
     render: function () {
         var data = this.props.data;
         return (
-            <div key={this.props.index} className='col-xs-2 col-md-2 col-lg-2'  onClick={this.editDispenser}>
-                <span onClick={this.removeDispenser} className='close'>x</span>
-                <div className='label label-default '
-                data-toggle="modal"
-                data-target=".add-dispenser-modal">
-                    {data.pump.id}
+            <div  className='col-xs-2'  onClick={this.editDispenser}>
+                <div className='row text-center'>
+                    <div onClick={this.removeDispenser} className='col-xs-12 close'>
+                        x
+                    </div>
                 </div>
-
-                <img src={img_pump}/>
-
-            </div>
+                <div className='row text-center'>
+                    <div className='col-xs-12'>
+                        <div className='label label-default '
+                        data-toggle="modal"
+                        data-target=".add-dispenser-modal">
+                                {data.pump.id}
+                        </div>
+                    </div>
+                </div>
+                <div className='row text-center'>
+                    <div className = 'col-xs-12' >
+                        <img src={img_pump}/>
+                    </div >
+                </div >
+            </div >
             )
     },
     editDispenser: function () {
-        DispenserActions.editDispenser(this.props.index);
+        DispenserActions.editDispenser(this.props.data.index);
     },
     removeDispenser: function () {
-        DispenserActions.removeDispenser(this.props.index);
+        DispenserActions.removeDispenser(this.props.data.index);
     }
 });
 
