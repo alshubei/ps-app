@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var request = require('superagent');
 var Dispenser = require('../../scripts/components/dailyjournal/dispenser.js');
 var Dailyjournal = require('../../scripts/components/dailyjournal/dailyjournal.js');
 var Journalresults = require('../../scripts/components/dailyjournal/journalresults.js');
@@ -12,6 +13,7 @@ var Panel = require('../../scripts/components/common/panel.js');
 var Debug = require('../../scripts/components/common/debug.js');
 var Dict = require('../../scripts/components/common/dict.js');
 var Save = require('../../scripts/components/dailyjournal/save-daily-journals.js');
+var JDate = require('../../scripts/components/common/jdate.js');
 var _ = require('underscore');
 
 
@@ -19,7 +21,7 @@ var img_pump = require('../../images/pump.png');
 
 var App = React.createClass({
     getInitialState: function () {
-        return DailyJournalStore.getDispensers();
+        return DailyJournalStore.getData();
     },
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
@@ -28,7 +30,7 @@ var App = React.createClass({
         this.unsubscribe();
     },
     onChange: function () {
-        this.setState(DailyJournalStore.getDispensers());
+        this.setState(DailyJournalStore.getData());
     },
     render: function () {
         var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
@@ -36,6 +38,7 @@ var App = React.createClass({
         return (
             <div className='container' >
                 <Pageheader title={Dict.headerTitle} subTitle={Dict.headerSubTitle} />
+                <JDate />
                 <Panel type={'primary'} header={journalHeader}>
                 {[
                     <div className='row' key={0} >
@@ -52,17 +55,16 @@ var App = React.createClass({
                             <Dailyjournal />
                         </div>
                     </div>,
-                    <Panel type={"primary"} key={2}>
-                        <div className='row ' >
-                            <span className='col-xs-12 vcenter' >
-                                <Journalresults data={journalsData} /><Save />
-                            </span>
-
-                        </div>
-                    </Panel>
+                    <div key={2} className={'row ' + (this.state.showResults ? '' : 'hidden')} >
+                        <span className='col-xs-12 vcenter' >
+                            <Panel type={'primary'} >
+                                <Journalresults data={journalsData} />
+                                <Save />
+                            </Panel>
+                        </span>
+                    </div>
                 ]}
                 </Panel>
-                <Debug json={DailyJournalStore.getDispensers()}/>
                 <Pagefooter title={Dict.footerTitle} subTitle={Dict.footerSubTitle}/>
             </div>
             );
