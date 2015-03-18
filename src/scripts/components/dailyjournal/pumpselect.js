@@ -8,11 +8,11 @@ var Dict = require('../common/dict.js');
 
 var Pumpselect = React.createClass({
     getInitialState: function () {
-        return {pumps: []};
+        return PumpsStore.getState();
     },
     componentDidMount: function () {
         //his.props.source could be some url/file.php that runs in mysql and returns js object you want
-        if (this.isMounted()) {
+        /*if (this.isMounted()) {
             $.get("php/pumps.php", function (result) {
                 this.setState({pumps: PumpsStore.getState()});
 
@@ -20,7 +20,7 @@ var Pumpselect = React.createClass({
                 console.log("pumps ", JSON.parse(result));
             });
 
-        }
+        }*/
     },
     render: function () {
         var pumps = this.state.pumps.map(function (item, i) {

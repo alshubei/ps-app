@@ -85,7 +85,7 @@ var Dispenser = React.createClass({
         validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handlePrevChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: e.target.value, curCounter: this.state.curCounter});
-            this.updateState(this.state.pump.id, e.target.value,this.state.curCounter, this.validation);
+            this.updateState(this.state.pump.id, e.target.value, this.state.curCounter, this.validation);
         },
         handleCurChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: e.target.value});
