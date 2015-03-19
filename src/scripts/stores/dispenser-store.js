@@ -3,22 +3,34 @@ var Reflux = require('reflux');
 var PumpsStore = require('../../scripts/stores/pumps-store.js');
 var DailyJournalStore = require('../../scripts/stores/dailyjournal-store.js');
 var DispenserActions = require('../../scripts/actions/dispenser-actions.js');
+var PumpsActions = require('../../scripts/actions/pumps-actions.js');
 
 var DispenserStore = Reflux.createStore({
-    listenables: [DispenserActions],
-    editDispenser: function (index) {
+    listenables: [DispenserActions, PumpsActions],
+    editDispenser: function (index) { //index is actually an id oder?
         var dispenser = DailyJournalStore.getData().dispensers[index];
         dispenser.editing = true;
         dispenser.index = index;
         _dispenser = dispenser;
         this.trigger(index);
     },
-    getDispenserData: function () {
-        return {dispensers: _dispenser, pumps: _pumps};
+    cancelEditDispenser: function (index) {
+        var dispenser = DailyJournalStore.getData().dispensers[index];
+        if (dispenser) {
+            dispenser.editing = false;
+            dispenser.index = index;
+            _dispenser = dispenser;
+            this.trigger(index);
+        }
+    },
+    getState: function () {
+        return _dispenser;
     },
     calcSubtotals: function (pump, prevValue, currentValue) {
         var liters = currentValue - prevValue;
-        var literPrice = PumpsStore.getLiterPrice(pump);
+        var pump = PumpsStore.getPump(pump);
+        //var literPrice = PumpsStore.getLiterPrice();
+        var literPrice = pump.fprice;
         var subtotal = literPrice * liters;
         return {liters: liters, subtotal: subtotal};
     },
@@ -52,8 +64,7 @@ var DispenserStore = Reflux.createStore({
     }
 });
 
-var _dispenser = {liters: 0, subtotal: 0, pump: {}/*PumpsStore.getDefaultPump()*/, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
-var _pumps = []
+var _dispenser = {id: 0, liters: 0, subtotal: 0, pumpIndex: 0, pump: {}, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
 
 
 module.exports = DispenserStore;

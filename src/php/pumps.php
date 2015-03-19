@@ -41,7 +41,7 @@ JOIN fuels f
 ON p.fuel_id = f.id");
 $result->execute();
 
-echo json_encode($result->fetchAll());
-//print_r(json_encode($result->fetchAll()));
+//echo json_encode($result->fetchAll());
+print_r(json_encode($result->fetchAll()));
 
 ?>

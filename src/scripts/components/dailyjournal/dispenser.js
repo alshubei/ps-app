@@ -11,16 +11,15 @@ var DispenserStore = require('../../stores/dispenser-store.js');
 var DispenserActions = require('../../actions/dispenser-actions.js');
 var PumpsActions = require('../../actions/pumps-actions.js');
 var Debug = require('../../components/common/debug.js');
+var _ = require('underscore');
 
 var Dispenser = React.createClass({
         getInitialState: function () {
-            var data = DispenserStore.getDispenserData();
+            var data = DispenserStore.getState();
             return data;
-            //PumpsStore.getDefaultPump()
         },
         componentDidMount: function () {
             this.unsubscribe = DispenserStore.listen(this._onChange);
-
             var data = this.state;
             data.validation = DispenserStore.validation({prevCounter: data.prevCounter, curCounter: data.curCounter});
             this.setState(data);
@@ -30,39 +29,28 @@ var Dispenser = React.createClass({
             this.unsubscribe();
         },
         _onChange: function () {
-            this.setState(DispenserStore.getDispenserData());
+            this.setState(DispenserStore.getState());
         },
         content: function () {
-            /*
-             <div className='col-xs-12 col-md-3'>
-             <Pumpcounter title={Dict.previousCounter}
-             onChange={this.handlePrevChange} value={this.state.prevCounter} />
-             </div>
-             <div className='col-xs-12 col-md-4'>
-             <Pumpcounter  title={Dict.currentCounter}
-             onChange={this.handleCurChange} value={this.state.curCounter}  />
-             </div>
-
-             <div className='top30  row'>
-             <div className='col-xs-12'>
-             <span  className="label label-default">{this.state.liters}</span>
-             <span> {Dict.liters} </span>
-             <span className="label label-info">{this.state.subtotal}</span>
-             <span> {Dict.subTotal} </span>
-             </div>
-             </div>
-             */
-            var pumpsData = {
-                items: [],
-                title: Dict.pump,
-                selected: 0
-            };
             return <div className='input-lg'>
                 <div className='row'>
                     <div className='col-xs-12 col-md-2'>
-                        <Pumpselect data={pumpsData}  onChange={this.handlePumpChange}/>
+                        <Pumpselect title={Dict.pump} selected={this.state.pumpIndex} onChange={this.handlePumpChange}/>
                     </div>
-
+                    <div className='col-xs-12 col-md-3'>
+                        <Pumpcounter title={Dict.previousCounter}
+                        onChange={this.handlePrevChange} value={this.state.prevCounter} />
+                    </div>
+                    <div className='col-xs-12 col-md-4'>
+                        <Pumpcounter  title={Dict.currentCounter}
+                        onChange={this.handleCurChange} value={this.state.curCounter}  />
+                    </div>
+                    <div className='top17 col-xs-12'>
+                        <span  className="label label-default">{this.state.liters}</span>
+                        <span> {Dict.liters} </span>
+                        <span className="label label-info">{this.state.subtotal}</span>
+                        <span> {Dict.subTotal} </span>
+                    </div>
                 </div>
 
             </div>
@@ -87,33 +75,40 @@ var Dispenser = React.createClass({
                 )
         },
         handleSave: function () {
-            /*
-             <Modal onSave={this.handleSave} modalLink={this.props.modalLink} title={Dict.dispenserModalTitle} saveCaption={'Ok'} closeCaption={'Cancel'} validation={this.state.validation.errorMsgs.length > 0}>
-
-             </Modal>
-             */
             DispenserActions.saveDispenser(this.state);
         },
-        getPumpData: function () {
-            return PumpsStore.getPump(this.state.pump.pid);
+        handleCancel: function () {
+            //trigger cancel edit
+            DispenserActions.cancelEditDispenser(this.state.id);
         },
         handlePumpChange: function (e) {
             var value = e.target.value;
-            this.updateState(value, this.state.prevCounter, this.state.curCounter, this.validation);
+            this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: this.state.curCounter});
+            this.updateState({pumpIndex: parseInt(value)});
         },
         validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handlePrevChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: e.target.value, curCounter: this.state.curCounter});
-            this.updateState(this.state.pump.pid, e.target.value, this.state.curCounter, this.validation);
+            this.updateState({prevCounter: parseFloat(e.target.value)});
         },
         handleCurChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: e.target.value});
-            this.updateState(this.state.pump.pid, this.state.prevCounter, e.target.value, this.validation);
+            this.updateState({curCounter: parseFloat(e.target.value)});
 
         },
-        updateState: function (pumpId, prevValue, currentValue, validation) {
+        updateState: function (newData) {
+            //plug the newData to the suitable
+            console.log('want to extend  ', JSON.stringify(this.state), ' with ',JSON.stringify(newData) );
+            _.extend(this.state,newData);
+            var id = this.state.id;
+            var pumpId = this.state.pumpIndex;
+            var prevValue = this.state.prevCounter;
+            var currentValue = this.state.curCounter;
+            var validation = this.validation;
+
             var subtotals = DispenserStore.calcSubtotals(pumpId, prevValue, currentValue);
-            return this.setState({liters: parseFloat(subtotals.liters), subtotal: parseFloat(subtotals.subtotal), pump: PumpsStore.getPump(pumpId), prevCounter: prevValue, curCounter: currentValue, validation: validation});
+            this.setState({id: id, liters: parseFloat(subtotals.liters), subtotal: parseFloat(subtotals.subtotal), pumpIndex: pumpId, prevCounter: prevValue, curCounter: currentValue, validation: validation});
+            console.log('did it?        ', JSON.stringify(this.state));
 
         }
     })

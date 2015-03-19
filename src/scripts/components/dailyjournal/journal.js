@@ -16,11 +16,12 @@ var Journal = React.createClass({
     render: function () {
         var data = this.props.data;
         var journal = this.getJournal();
+        console.log('journal after getjournal calculate journal ', journal);
         var dispensers = data[1].map(function (item, i) {
             return <Dispenserlink key={i}  data={item}/>
         });
         return (
-            <div  className='col-xs-12 col-md-6 col-lg-3'>
+            <div  className='col-xs-12 col-md-6 col-lg-4'>
                 <div  className='thumbnail'>
                     <span className='close' onClick={this.removeJournal}>x</span>
                     <h3>{journal.fuel}</h3>
@@ -39,7 +40,7 @@ var Journal = React.createClass({
                     <br />
                     <div className='thumbnail'>
                         <div className='row'>
-                     {dispensers}
+                            <span>{dispensers}</span>
                         </div>
                     </div>
                 </div>

@@ -1,80 +1,30 @@
 'use strict';
 
 var React = require('react');
-var request = require('superagent');
-var Dispenser = require('../../scripts/components/dailyjournal/dispenser.js');
 var Dailyjournal = require('../../scripts/components/dailyjournal/dailyjournal.js');
-var Journalresults = require('../../scripts/components/dailyjournal/journalresults.js');
-var DailyJournalStore = require('../../scripts/stores/dailyjournal-store.js');
-var Modal = require('../../scripts/components/common/modal.js');
 var Pageheader = require('../../scripts/components/header.js');
 var Pagefooter = require('../../scripts/components/footer.js');
 var Panel = require('../../scripts/components/common/panel.js');
 var Debug = require('../../scripts/components/common/debug.js');
 var Dict = require('../../scripts/components/common/dict.js');
-var Save = require('../../scripts/components/dailyjournal/save-daily-journals.js');
 var JDate = require('../../scripts/components/common/jdate.js');
 var _ = require('underscore');
 
 
-var img_pump = require('../../images/pump.png');
+
 
 var App = React.createClass({
-    getInitialState: function () {
-        return DailyJournalStore.getData();
-    },
-    componentDidMount: function () {
-        this.unsubscribe = DailyJournalStore.listen(this.onChange);
-    },
-    componentWillUnmount: function () {
-        this.unsubscribe();
-    },
-    onChange: function () {
-        this.setState(DailyJournalStore.getData());
-    },
     render: function () {
-        var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
-        var journalHeader = Dict.journal;
         return (
             <div className='container' >
                 <Pageheader title={Dict.headerTitle} subTitle={Dict.headerSubTitle} />
                 <JDate />
-                <Panel type={'primary'} header={journalHeader}>
-                   {this.appBody(journalsData)}
+                <Panel type={'primary'} header={Dict.journal}>
+                   <Dailyjournal />
                 </Panel>
                 <Pagefooter title={Dict.footerTitle} subTitle={Dict.footerSubTitle}/>
             </div>
             );
-    },
-    appBody: function (data) {
-        return (
-            <div>
-                <div className='row'>
-                    <div className='col-xs-12 col-md-12 col-lg-12' >
-                        <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
-                        +<img src={img_pump}/>
-                        </button>
-                    </div>
-                    <Dispenser modalLink={'add-dispenser-modal'}/>
-                </div>
-
-                <div className='row'>
-                    <div className='col-xs-12 col-md-12 col-lg-12' >
-                        <Dailyjournal />
-                    </div>
-                </div>
-
-                <div className={'row ' + (this.state.showResults ? '' : 'hidden')} >
-                    <span className='col-xs-12 vcenter' >
-                        <Panel type={'primary'} >
-                            <Journalresults data={data} />
-                            <Save />
-
-                        </Panel>
-                    </span>
-                </div>
-            </div>
-            )
     }
 });
 

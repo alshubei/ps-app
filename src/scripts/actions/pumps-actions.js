@@ -1,7 +1,6 @@
 var Reflux = require('reflux');
 var Actions = Reflux.createActions([
-    "fetchDataFromServer",
-    "setActivePump"
+    "fetchDataFromServer"
 
 ]);
 

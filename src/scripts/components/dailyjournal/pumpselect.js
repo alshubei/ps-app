@@ -16,8 +16,7 @@ var Pumpselect = React.createClass({
         this.unsubscribe = PumpsStore.listen(this._onChange);
         if (this.isMounted()) {
             this.getPumpsDataIfNeeded();
-        }
-
+        };
     },
     componentWillUnmount: function () {
         this.unsubscribe();
@@ -25,27 +24,31 @@ var Pumpselect = React.createClass({
     getPumpsDataIfNeeded: function () {
         console.log('V) View talks to Actions fetchDataFromServer is triggered');
         PumpsActions.fetchDataFromServer();
-        PumpsActions.setActivePump(0);
 
     },
     render: function () {
         var pumps = this.state.pumps.map(function (item, i) {
-            return <option key={i} value={item.pid}>{item.pname}-{item.fname}</option>
+            return <option key={i} value={i}>{item.pname + '-' + item.fname}</option>
         }.bind(this));
+        var selectedIndex = this.props.selected;
+        var pump = this.state.pumps[selectedIndex];
+
         return (
             <div>
                 <div>{this.props.title}</div>
                 <div>
-                    <select   value={this.props.value} onChange={this.props.onChange}>
+                    <select value={selectedIndex} onChange={this.props.onChange}>
                         {pumps}
                     </select>
                 </div>
-                <div className="label label-default">{this.props.pump.fname},  {this.props.pump.fprice}/{Dict.liter} </div>
+                <div className="label label-default">
+                    {pump.fname} ({pump.fprice}/{Dict.liter})
+                </div>
             </div>
             )
     },
     _onChange: function () {
-        console.log('V) State is updated -> Re-render, State: ', PumpsStore.getState());
+        console.log('V) State is updated -> Re-render, State: ', PumpsStore.getState().pumps);
         this.setState(PumpsStore.getState());
     }
 });

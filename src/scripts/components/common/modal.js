@@ -25,7 +25,7 @@ var Modal =
                                 {this.props.children}
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-default" data-dismiss="modal">{this.props.closeCaption}</button>
+                                    <button type="button" className="btn btn-default" data-dismiss="modal" onClick={this.props.onCancel}>{this.props.closeCaption}</button>
                                     <button type="button" className={this.props.validation ? "btn  disabled" : "btn  btn-primary"} data-dismiss="modal" onClick={this.props.onSave}>{this.props.saveCaption}</button>
                                 </div>
                             </div>
