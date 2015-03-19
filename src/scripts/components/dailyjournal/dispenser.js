@@ -67,11 +67,13 @@ var Dispenser = React.createClass({
             }
 
             return (
+                <Modal  modalLink={this.props.modalLink} onSave={this.handleSave} onCancel={this.handleCancel}title={Dict.dispenserModalTitle} saveCaption={'Ok'} closeCaption={'Cancel'} validation={this.state.validation.errorMsgs.length > 0}>
                 <Panel type={'primary'} header={Dict.dispensercounters} >
                             {validation}
                             {this.content()}
                 </Panel>
 
+                </Modal>
                 )
         },
         handleSave: function () {
@@ -84,31 +86,26 @@ var Dispenser = React.createClass({
         handlePumpChange: function (e) {
             var value = e.target.value;
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: this.state.curCounter});
-            this.updateState({pumpIndex: parseInt(value)});
+            this.updateState({pumpIndex: parseInt(value), validation: this.validation});
         },
         validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handlePrevChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: e.target.value, curCounter: this.state.curCounter});
-            this.updateState({prevCounter: parseFloat(e.target.value)});
+            this.updateState({prevCounter: e.target.value, validation: this.validation});
         },
         handleCurChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: e.target.value});
-            this.updateState({curCounter: parseFloat(e.target.value)});
+            this.updateState({curCounter: e.target.value, validation: this.validation});
 
         },
         updateState: function (newData) {
             //plug the newData to the suitable
-            console.log('want to extend  ', JSON.stringify(this.state), ' with ',JSON.stringify(newData) );
-            _.extend(this.state,newData);
-            var id = this.state.id;
-            var pumpId = this.state.pumpIndex;
-            var prevValue = this.state.prevCounter;
-            var currentValue = this.state.curCounter;
-            var validation = this.validation;
-
-            var subtotals = DispenserStore.calcSubtotals(pumpId, prevValue, currentValue);
-            this.setState({id: id, liters: parseFloat(subtotals.liters), subtotal: parseFloat(subtotals.subtotal), pumpIndex: pumpId, prevCounter: prevValue, curCounter: currentValue, validation: validation});
-            console.log('did it?        ', JSON.stringify(this.state));
+            _.extend(this.state, newData);
+            var subtotals = DispenserStore.calcSubtotals(this.state.pumpIndex, this.state.prevCounter, this.state.curCounter);
+            this.setState(_.extend(
+                this.state, {
+                    liters: subtotals.liters,
+                    subtotal: subtotals.subtotal}));
 
         }
     })

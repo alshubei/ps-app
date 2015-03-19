@@ -32,7 +32,7 @@ var DispenserStore = Reflux.createStore({
         //var literPrice = PumpsStore.getLiterPrice();
         var literPrice = pump.fprice;
         var subtotal = literPrice * liters;
-        return {liters: liters, subtotal: subtotal};
+        return {liters: parseFloat(liters), subtotal: parseFloat(subtotal)};
     },
     validation: function (obj) {
         var result = {errorMsgs: []};
@@ -43,6 +43,9 @@ var DispenserStore = Reflux.createStore({
         if (obj.curCounter.length == 0 || isNaN(obj.curCounter)) {
             result.errorMsgs
                 .push({msg: 'current is not valid!'});
+        }
+        if (result.errorMsgs.length > 0) {
+            return result;
         }
         var validateSemantic = function (obj) {
             var errors = [];
