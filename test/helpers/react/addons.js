@@ -485,7 +485,7 @@ var topLevelTypes = EventConstants.topLevelTypes;
 var eventTypes = {
   change: {
     phasedRegistrationNames: {
-      bubbled: keyOf({onChange: null}),
+      bubbled: keyOf({_onChange: null}),
       captured: keyOf({onChangeCapture: null})
     }
   }
@@ -741,7 +741,7 @@ function getTargetIDForClickEvent(
 }
 
 /**
- * This plugin creates an `onChange` event that normalizes change events
+ * This plugin creates an `_onChange` event that normalizes change events
  * across form elements. This event fires at a time when it's possible to
  * change the element's value without seeing a flicker.
  *
@@ -3200,11 +3200,11 @@ var invariant = require("./invariant");
 var LinkedValueMixin = {
   _assertLink: function() {
     ("production" !== "development" ? invariant(
-      this.props.value == null && this.props.onChange == null,
-      'Cannot provide a valueLink and a value or onChange event. If you ' +
-        'want to use value or onChange, you probably don\'t want to use ' +
+      this.props.value == null && this.props._onChange == null,
+      'Cannot provide a valueLink and a value or _onChange event. If you ' +
+        'want to use value or _onChange, you probably don\'t want to use ' +
         'valueLink'
-    ) : invariant(this.props.value == null && this.props.onChange == null));
+    ) : invariant(this.props.value == null && this.props._onChange == null));
   },
 
   /**
@@ -3219,14 +3219,14 @@ var LinkedValueMixin = {
   },
 
   /**
-   * @return {function} change callback either from onChange prop or link.
+   * @return {function} change callback either from _onChange prop or link.
    */
   getOnChange: function() {
     if (this.props.valueLink) {
       this._assertLink();
       return this._handleLinkedValueChange;
     }
-    return this.props.onChange;
+    return this.props._onChange;
   },
 
   /**
@@ -6646,7 +6646,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
   },
 
   shouldComponentUpdate: function() {
-    // Defer any updates to this component during the `onChange` handler.
+    // Defer any updates to this component during the `_onChange` handler.
     return !this._isChanging;
   },
 
@@ -6662,7 +6662,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
     var value = this.getValue();
     props.value = value != null ? value : this.state.value;
 
-    props.onChange = this._handleChange;
+    props._onChange = this._handleChange;
 
     return input(props, this.props.children);
   },
@@ -6921,7 +6921,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
   },
 
   shouldComponentUpdate: function() {
-    // Defer any updates to this component during the `onChange` handler.
+    // Defer any updates to this component during the `_onChange` handler.
     return !this._isChanging;
   },
 
@@ -6929,7 +6929,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
     // Clone `this.props` so we don't mutate the input.
     var props = merge(this.props);
 
-    props.onChange = this._handleChange;
+    props._onChange = this._handleChange;
     props.value = null;
 
     return select(props, this.props.children);
@@ -7250,7 +7250,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
   },
 
   shouldComponentUpdate: function() {
-    // Defer any updates to this component during the `onChange` handler.
+    // Defer any updates to this component during the `_onChange` handler.
     return !this._isChanging;
   },
 
@@ -7266,7 +7266,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
 
     props.defaultValue = null;
     props.value = value != null ? value : this.state.value;
-    props.onChange = this._handleChange;
+    props._onChange = this._handleChange;
 
     // Always set children to the same thing. In IE9, the selection range will
     // get reset if `textContent` is mutated.

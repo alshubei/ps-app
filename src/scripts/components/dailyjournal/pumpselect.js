@@ -3,24 +3,30 @@
 var React = require('react');
 
 var PumpsStore = require('../../stores/pumps-store.js');
+var PumpsActions = require('../../actions/pumps-actions.js');
 var Dict = require('../common/dict.js');
 
 
 var Pumpselect = React.createClass({
     getInitialState: function () {
+        console.log('V) initial state: ', PumpsStore.getState().pumps);
         return PumpsStore.getState();
     },
     componentDidMount: function () {
-        //his.props.source could be some url/file.php that runs in mysql and returns js object you want
-        /*if (this.isMounted()) {
-            $.get("php/pumps.php", function (result) {
-                this.setState({pumps: PumpsStore.getState()});
+        this.unsubscribe = PumpsStore.listen(this._onChange);
+        if (this.isMounted()) {
+            this.getPumpsDataIfNeeded();
+        }
 
-                console.log(result);
-                console.log("pumps ", JSON.parse(result));
-            });
+    },
+    componentWillUnmount: function () {
+        this.unsubscribe();
+    },
+    getPumpsDataIfNeeded: function () {
+        console.log('V) View talks to Actions fetchDataFromServer is triggered');
+        PumpsActions.fetchDataFromServer();
+        PumpsActions.setActivePump(0);
 
-        }*/
     },
     render: function () {
         var pumps = this.state.pumps.map(function (item, i) {
@@ -34,9 +40,13 @@ var Pumpselect = React.createClass({
                         {pumps}
                     </select>
                 </div>
-                <div className="label label-default">{this.props.pump.fuel},  {this.props.pump.literprice}/{Dict.liter} </div>
+                <div className="label label-default">{this.props.pump.fname},  {this.props.pump.fprice}/{Dict.liter} </div>
             </div>
             )
+    },
+    _onChange: function () {
+        console.log('V) State is updated -> Re-render, State: ', PumpsStore.getState());
+        this.setState(PumpsStore.getState());
     }
 });
 

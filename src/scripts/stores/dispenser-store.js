@@ -5,18 +5,16 @@ var DailyJournalStore = require('../../scripts/stores/dailyjournal-store.js');
 var DispenserActions = require('../../scripts/actions/dispenser-actions.js');
 
 var DispenserStore = Reflux.createStore({
-    init: function () {
-        this.listenToMany(DispenserActions);
-    },
+    listenables: [DispenserActions],
     editDispenser: function (index) {
         var dispenser = DailyJournalStore.getData().dispensers[index];
         dispenser.editing = true;
         dispenser.index = index;
-        _dispenserData = dispenser;
+        _dispenser = dispenser;
         this.trigger(index);
     },
     getDispenserData: function () {
-        return _dispenserData;
+        return {dispensers: _dispenser, pumps: _pumps};
     },
     calcSubtotals: function (pump, prevValue, currentValue) {
         var liters = currentValue - prevValue;
@@ -54,7 +52,8 @@ var DispenserStore = Reflux.createStore({
     }
 });
 
-var _dispenserData = {liters: 0, subtotal: 0, pump: PumpsStore.getDefaultPump(), prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
+var _dispenser = {liters: 0, subtotal: 0, pump: {}/*PumpsStore.getDefaultPump()*/, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
+var _pumps = []
 
 
 module.exports = DispenserStore;

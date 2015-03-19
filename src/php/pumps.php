@@ -30,10 +30,18 @@ include_once("config.php");
 ///* close connection */
 //$mysqli->close();
 
-$result = $handler->prepare("SELECT p.id pid, p.name pname, f.name fname FROM pumps p JOIN fuels f ON p.fuel_id = f.id");
+$result = $handler->prepare("SELECT
+p.id pid,
+p.name pname,
+f.id fid,
+f.name fname,
+f.price fprice
+FROM pumps p
+JOIN fuels f
+ON p.fuel_id = f.id");
 $result->execute();
 
-//echo json_encode($result->fetchAll());
-print_r(json_encode($result->fetchAll()));
+echo json_encode($result->fetchAll());
+//print_r(json_encode($result->fetchAll()));
 
 ?>

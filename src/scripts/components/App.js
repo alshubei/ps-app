@@ -40,36 +40,45 @@ var App = React.createClass({
                 <Pageheader title={Dict.headerTitle} subTitle={Dict.headerSubTitle} />
                 <JDate />
                 <Panel type={'primary'} header={journalHeader}>
-                {[
-                    <div className='row' key={0} >
-                        <div className='col-xs-12 col-md-12 col-lg-12' >
-                            <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
-                            +
-                                <img src={img_pump}/>
-                            </button>
-                        </div>
-                        <Dispenser modalLink={'add-dispenser-modal'}/>
-                    </div>,
-                    <div className='row' key={1}>
-                        <div className='col-xs-12 col-md-12 col-lg-12' >
-                            <Dailyjournal />
-                        </div>
-                    </div>,
-                    <div key={2} className={'row ' + (this.state.showResults ? '' : 'hidden')} >
-                        <span className='col-xs-12 vcenter' >
-                            <Panel type={'primary'} >
-                                <Journalresults data={journalsData} />
-                                <Save />
-                            </Panel>
-                        </span>
-                    </div>
-                ]}
+                   {this.appBody(journalsData)}
                 </Panel>
                 <Pagefooter title={Dict.footerTitle} subTitle={Dict.footerSubTitle}/>
             </div>
             );
+    },
+    appBody: function (data) {
+        return (
+            <div>
+                <div className='row'>
+                    <div className='col-xs-12 col-md-12 col-lg-12' >
+                        <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
+                        +<img src={img_pump}/>
+                        </button>
+                    </div>
+                    <Dispenser modalLink={'add-dispenser-modal'}/>
+                </div>
+
+                <div className='row'>
+                    <div className='col-xs-12 col-md-12 col-lg-12' >
+                        <Dailyjournal />
+                    </div>
+                </div>
+
+                <div className={'row ' + (this.state.showResults ? '' : 'hidden')} >
+                    <span className='col-xs-12 vcenter' >
+                        <Panel type={'primary'} >
+                            <Journalresults data={data} />
+                            <Save />
+
+                        </Panel>
+                    </span>
+                </div>
+            </div>
+            )
     }
 });
+
+
 React.render(
     <App />
     , document.body); // jshint ignore:line
