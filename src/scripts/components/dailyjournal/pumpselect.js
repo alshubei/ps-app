@@ -9,7 +9,6 @@ var Dict = require('../common/dict.js');
 
 var Pumpselect = React.createClass({
     getInitialState: function () {
-        console.log('V) initial state: ', PumpsStore.getState().pumps);
         return PumpsStore.getState();
     },
     componentDidMount: function () {
@@ -22,7 +21,6 @@ var Pumpselect = React.createClass({
         this.unsubscribe();
     },
     getPumpsDataIfNeeded: function () {
-        console.log('V) View talks to Actions fetchDataFromServer is triggered');
         PumpsActions.fetchDataFromServer();
 
     },
@@ -48,7 +46,6 @@ var Pumpselect = React.createClass({
             )
     },
     _onChange: function () {
-        console.log('V) State is updated -> Re-render, State: ', PumpsStore.getState().pumps);
         this.setState(PumpsStore.getState());
     }
 });

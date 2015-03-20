@@ -6,23 +6,6 @@
  * Time: 14:30
  */
 
-/*
- *
-
-$username = "mokhtar";
-$password = "test1234";
-$hostname = "localhost";
-$databasename = 'alshubei';
-
-//connect to database
-$mysqli = new mysqli($hostname, $username, $password, $databasename);
-
-if ($mysqli->connect_errno) {
-    printf("Connect failed: %s\n", $mysqli->connect_error);
-    exit();
-}
-*/
-
 //PDO
 try {
     $handler = new PDO('mysql:host=127.0.0.1;dbname=alshubei','mokhtar','test1234');

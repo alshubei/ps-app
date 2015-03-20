@@ -16,7 +16,6 @@ var Journal = React.createClass({
     render: function () {
         var data = this.props.data;
         var journal = this.getJournal();
-        console.log('journal after getjournal calculate journal ', journal);
         var dispensers = data[1].map(function (item, i) {
             return <Dispenserlink key={i}  data={item}/>
         });

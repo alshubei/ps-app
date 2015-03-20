@@ -7,18 +7,20 @@ var _ = require('underscore');
 var dailyJournalStore = Reflux.createStore({
     listenables: [DispenserActions, DailyJournalActions],
     saveDispenser: function (dispenser) {
-        console.log('want save dispenser ', dispenser, ' in _data.dispensers ', _data.dispensers);
         if (dispenser.editing) {
             delete dispenser.editing;
-            _data.dispensers[dispenser.id] = dispenser;
+            var index = _.findIndex(_data.dispensers, {id: dispenser.id});
+            _data.dispensers[index] = dispenser;
+
         } else {
             //indexing the dispensers to uncouple it from the react UI based key thus identify it always
             dispenser.id = _data.dispensers.length;
-            _data.dispensers.push(dispenser);
-            _data.showResults = true;
+            dispenser.pump = PumpsStores.getPump(dispenser.pumpIndex);
+            _data.dispensers.push(_.extend({}, dispenser));
         }
-        dispenser.pump = PumpsStores.getPump(dispenser.pumpIndex);
+
         this.trigger(dispenser);
+
     },
     removeJournal: function (fuel) {
         _data.dispensers = _.filter(_data.dispensers, function (d) {
@@ -26,9 +28,10 @@ var dailyJournalStore = Reflux.createStore({
         });
         this.trigger(fuel);
     },
-    removeDispenser: function (key) {
-        _data.dispensers.splice(key, 1);
-        this.trigger(key);
+    removeDispenser: function (id) {
+        var index = _.findIndex(_data.dispensers, {id: id});
+        _data.dispensers.splice(index, 1);
+        this.trigger(index);
     },
     getJournals: function () {
         var journals = _.chain(_data.dispensers).groupBy(function (o) {
@@ -44,12 +47,20 @@ var dailyJournalStore = Reflux.createStore({
         }
         var now = Date.now();
 
-        return {dispensers: _data.dispensers, date: now, showResults: show}
+        return {dispensers: _data.dispensers, date: now}
+    },
+    saveJournalsInServer: function () {
+        var data = _data.dispensers;
+        $.post("server/query.php?data=savejournals",data, function (data, status) {
+
+            console.log('data: ', data, ', status ',  status);
+            this.trigger();
+        }.bind(this));
+
     }
 });
 
-var _data = { dispensers: [], showResults: false};
-
+var _data = { dispensers: []};
 
 
 module.exports = dailyJournalStore;

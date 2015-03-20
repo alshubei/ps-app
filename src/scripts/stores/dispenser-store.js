@@ -4,24 +4,23 @@ var PumpsStore = require('../../scripts/stores/pumps-store.js');
 var DailyJournalStore = require('../../scripts/stores/dailyjournal-store.js');
 var DispenserActions = require('../../scripts/actions/dispenser-actions.js');
 var PumpsActions = require('../../scripts/actions/pumps-actions.js');
+var _ = require('underscore');
 
 var DispenserStore = Reflux.createStore({
     listenables: [DispenserActions, PumpsActions],
-    editDispenser: function (index) { //index is actually an id oder?
-        var dispenser = DailyJournalStore.getData().dispensers[index];
-        dispenser.editing = true;
-        dispenser.index = index;
-        _dispenser = dispenser;
-        this.trigger(index);
-    },
-    cancelEditDispenser: function (index) {
-        var dispenser = DailyJournalStore.getData().dispensers[index];
-        if (dispenser) {
-            dispenser.editing = false;
-            dispenser.index = index;
-            _dispenser = dispenser;
-            this.trigger(index);
+    editDispenser: function (id) {
+        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {id: id});
+        if (_dispenser) {
+            _dispenser.editing = true;
         }
+        this.trigger(id);
+    },
+    cancelEditDispenser: function (id) {
+        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {id: id});
+        if (_dispenser) {
+            _dispenser.editing = false;
+        }
+        this.trigger(id);
     },
     getState: function () {
         return _dispenser;
@@ -29,7 +28,6 @@ var DispenserStore = Reflux.createStore({
     calcSubtotals: function (pump, prevValue, currentValue) {
         var liters = currentValue - prevValue;
         var pump = PumpsStore.getPump(pump);
-        //var literPrice = PumpsStore.getLiterPrice();
         var literPrice = pump.fprice;
         var subtotal = literPrice * liters;
         return {liters: parseFloat(liters), subtotal: parseFloat(subtotal)};

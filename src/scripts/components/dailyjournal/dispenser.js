@@ -65,7 +65,6 @@ var Dispenser = React.createClass({
                 {errors}
                 </Panel>;
             }
-
             return (
                 <Modal  modalLink={this.props.modalLink} onSave={this.handleSave} onCancel={this.handleCancel}title={Dict.dispenserModalTitle} saveCaption={'Ok'} closeCaption={'Cancel'} validation={this.state.validation.errorMsgs.length > 0}>
                 <Panel type={'primary'} header={Dict.dispensercounters} >

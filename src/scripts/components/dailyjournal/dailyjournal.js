@@ -8,6 +8,7 @@ var Journalresults = require('../../components/dailyjournal/journalresults.js');
 var Panel = require('../../components/common/panel.js');
 var Debug = require('../../components/common/debug.js');
 var Save = require('../../components/dailyjournal/save-daily-journals.js');
+var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 var _ = require('underscore');
 var img_pump = require('../../../images/pump.png');
 
@@ -25,7 +26,6 @@ var Dailyjournal = React.createClass({
         //make journals out of dispensers
         var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
         var journals = journalsData.map(function (item, i) {
-            console.log('journal= ', item );
             return <Journal key={i}   data={item} />;
         });
 
@@ -48,17 +48,20 @@ var Dailyjournal = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className={'row ' + (this.state.showResults ? '' : 'hidden')} >
+                <div className='row' >
                     <span className='col-xs-12 vcenter' >
                         <Panel type={'primary'} >
                             <Journalresults data={journalsData} />
-                            <Save />
+                            <Save onClick={this.handleSaveJournals} able={this.state.dispensers.length > 0}/>
 
                         </Panel>
                     </span>
                 </div>
             </div>
             )
+    },
+    handleSaveJournals: function () {
+      DailyJournalActions.saveJournalsInServer();
     },
     onChange: function () {
         this.setState(DailyJournalStore.getData());

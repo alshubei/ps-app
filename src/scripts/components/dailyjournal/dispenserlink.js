@@ -8,6 +8,7 @@ var Dispenserlink = React.createClass({
 
     render: function () {
         var dispenser = this.props.data;
+        var pump = PumpsStore.getPump(dispenser.pumpIndex);
         return (
             <div  className='col-xs-2'  >
                 <div className='row text-center'>
@@ -16,19 +17,19 @@ var Dispenserlink = React.createClass({
                     </div>
                 </div>
                 <div  onClick={this.editDispenser}>
-                    <div className='row text-center'>
-                        <div className='col-xs-12'>
-                            <div className='label label-default cp' data-toggle="modal"
-                            data-target=".add-dispenser-modal">
-                                {PumpsStore.getPump(dispenser.pumpIndex).pname}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row text-center'>
+                    <div className='row'>
                         <div className = 'col-xs-12' >
                             <img className='cp' src={img_pump} data-toggle="modal"
                             data-target=".add-dispenser-modal" />
                         </div >
+                    </div>
+                    <div className='row '>
+                        <div className='col-xs-12'>
+                            <div className='label label-default cp' data-toggle="modal"
+                            data-target=".add-dispenser-modal">
+                                {pump.pname}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
