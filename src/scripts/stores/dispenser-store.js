@@ -8,19 +8,19 @@ var _ = require('underscore');
 
 var DispenserStore = Reflux.createStore({
     listenables: [DispenserActions, PumpsActions],
-    editDispenser: function (id) {
-        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {id: id});
+    editDispenser: function (index) {
+        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {dispenserIndex: index});
         if (_dispenser) {
             _dispenser.editing = true;
         }
-        this.trigger(id);
+        this.trigger(index);
     },
-    cancelEditDispenser: function (id) {
-        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {id: id});
+    cancelEditDispenser: function (index) {
+        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {dispenserIndex: index});
         if (_dispenser) {
             _dispenser.editing = false;
         }
-        this.trigger(id);
+        this.trigger(index);
     },
     getState: function () {
         return _dispenser;
@@ -65,7 +65,7 @@ var DispenserStore = Reflux.createStore({
     }
 });
 
-var _dispenser = {id: 0, liters: 0, subtotal: 0, pumpIndex: 0, pump: {}, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
+var _dispenser = {dispenserIndex: 0, pumpIndex: 0, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
 
 
 module.exports = DispenserStore;

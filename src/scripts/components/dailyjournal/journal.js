@@ -20,9 +20,9 @@ var Journal = React.createClass({
             return <Dispenserlink key={i}  data={item}/>
         });
         return (
-            <div  className='col-xs-12 col-md-6 col-lg-4'>
-                <div  className='thumbnail'>
-                    <span className='close' onClick={this.removeJournal}>x</span>
+            <div  className={'col-xs-12 col-md-6 col-lg-4 '}>
+                <div  className={'thumbnail ' + (journal.isAllSaved ? ' saved' : ' ')}>
+                    <span className={'close ' + (journal.isSomeSaved ? ' saved' : ' ')} onClick={this.removeJournal}>x</span>
                     <h3>{journal.fuel}</h3>
                     <div>Prev:
                         <span className="label label-default">{journal.prevCounter}</span>
@@ -37,10 +37,8 @@ var Journal = React.createClass({
                         <span className="label label-info">{journal.subtotal}</span>
                     </div>
                     <br />
-                    <div className='thumbnail'>
-                        <div className='row'>
-                            <span>{dispensers}</span>
-                        </div>
+                    <div className='thumbnail row'>
+                            {dispensers}
                     </div>
                 </div>
             </div>

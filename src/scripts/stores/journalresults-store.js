@@ -5,12 +5,22 @@ var JournalResultsStore = Reflux.createStore({
     init: function () {
     },
     getTotals: function (journals) {
-        var result = _.reduce(journals, function (memo, item) {
-            return memo + _.reduce(item[1], function (memo2, item2) {
+        var notSaved = _.reduce(journals, function (memo, item) {
+            return memo + _.chain(item[1]).filter(function (o) {
+                return !o.saved;
+            }).reduce(function (memo2, item2) {
                 return memo2 + item2.subtotal;
             }, 0);
         }, 0);
-        return result;
+        var saved = _.reduce(journals, function (memo, item) {
+            return memo + _.chain(item[1]).filter(function (o) {
+                return o.saved && o.saved == true;
+            }).reduce(function (memo2, item2) {
+                return memo2 + item2.subtotal;
+            }, 0);
+        }, 0);
+
+        return {notSaved: notSaved, saved: saved};
     }
 
 });

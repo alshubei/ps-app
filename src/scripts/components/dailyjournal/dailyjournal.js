@@ -2,6 +2,7 @@
 
 var React = require('react');
 var DailyJournalStore = require('../../stores/dailyjournal-store.js');
+var JournalResultsStore = require('../../stores/journalresults-store.js');
 var Dispenser = require('../../components/dailyjournal/dispenser.js');
 var Journal = require('../../components/dailyjournal/journal.js');
 var Journalresults = require('../../components/dailyjournal/journalresults.js');
@@ -28,7 +29,6 @@ var Dailyjournal = React.createClass({
         var journals = journalsData.map(function (item, i) {
             return <Journal key={i}   data={item} />;
         });
-
         return (
             <div>
                 <div className='row'>
@@ -52,7 +52,7 @@ var Dailyjournal = React.createClass({
                     <span className='col-xs-12 vcenter' >
                         <Panel type={'primary'} >
                             <Journalresults data={journalsData} />
-                            <Save onClick={this.handleSaveJournals} able={this.state.dispensers.length > 0}/>
+                            <Save onClick={this.handleSaveJournals} able={JournalResultsStore.getTotals(journalsData).notSaved > 0}/>
 
                         </Panel>
                     </span>

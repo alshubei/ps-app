@@ -32,6 +32,7 @@ var Dispenser = React.createClass({
             this.setState(DispenserStore.getState());
         },
         content: function () {
+            var subtotals = DispenserStore.calcSubtotals(this.state.pumpIndex, this.state.prevCounter, this.state.curCounter)
             return <div className='input-lg'>
                 <div className='row'>
                     <div className='col-xs-12 col-md-2'>
@@ -46,9 +47,9 @@ var Dispenser = React.createClass({
                         onChange={this.handleCurChange} value={this.state.curCounter}  />
                     </div>
                     <div className='top17 col-xs-12'>
-                        <span  className="label label-default">{this.state.liters}</span>
+                        <span  className="label label-default">{subtotals.liters}</span>
                         <span> {Dict.liters} </span>
-                        <span className="label label-info">{this.state.subtotal}</span>
+                        <span className="label label-info">{subtotals.subtotal}</span>
                         <span> {Dict.subTotal} </span>
                     </div>
                 </div>
@@ -80,7 +81,7 @@ var Dispenser = React.createClass({
         },
         handleCancel: function () {
             //trigger cancel edit
-            DispenserActions.cancelEditDispenser(this.state.id);
+            DispenserActions.cancelEditDispenser(this.state.dispenserIndex);
         },
         handlePumpChange: function (e) {
             var value = e.target.value;

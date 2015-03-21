@@ -10,7 +10,7 @@ var Dispenserlink = React.createClass({
         var dispenser = this.props.data;
         var pump = PumpsStore.getPump(dispenser.pumpIndex);
         return (
-            <div  className='col-xs-2'  >
+            <div  className={'col-xs-2 ' + (dispenser.saved ? ' saved' : ' ')}  >
                 <div className='row text-center'>
                     <div onClick={this.removeDispenser} className='col-xs-12 close'>
                         <span>x</span>
@@ -36,10 +36,10 @@ var Dispenserlink = React.createClass({
             )
     },
     editDispenser: function () {
-        DispenserActions.editDispenser(this.props.data.id);
+        DispenserActions.editDispenser(this.props.data.dispenserIndex);
     },
     removeDispenser: function () {
-        DispenserActions.removeDispenser(this.props.data.id);
+        DispenserActions.removeDispenser(this.props.data.dispenserIndex);
     }
 });
 

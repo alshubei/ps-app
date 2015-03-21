@@ -7,13 +7,20 @@ var JournalStore = Reflux.createStore({
     calculateJournal: function (fuelDispensers) {
         var dispensers = fuelDispensers[1];
         var journal = _calcJournal(dispensers);
-
+        var isAllSaved = _.every(dispensers, function (o) {
+            return o.saved == true;
+        });
+        var isSomeSaved = _.some(dispensers, function (o) {
+            return o.saved == true;
+        });
         return {
             fuel: fuelDispensers[0],
             liters: journal.liters,
             prevCounter: journal.prevCounter,
             curCounter: journal.curCounter,
-            subtotal: journal.subtotal
+            subtotal: journal.subtotal,
+            isAllSaved: isAllSaved,
+            isSomeSaved: isSomeSaved
         };
     }
 
