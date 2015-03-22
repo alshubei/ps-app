@@ -32,11 +32,13 @@ var Dispenser = React.createClass({
             this.setState(DispenserStore.getState());
         },
         content: function () {
-            var subtotals = DispenserStore.calcSubtotals(this.state.pumpIndex, this.state.prevCounter, this.state.curCounter)
+            var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter)
             return <div className='input-lg'>
                 <div className='row'>
                     <div className='col-xs-12 col-md-2'>
-                        <Pumpselect title={Dict.pump} selected={this.state.pumpIndex} onChange={this.handlePumpChange}/>
+                        <Pumpselect title={Dict.pump}
+                        selected={this.state.pumpId}
+                        onChange={this.handlePumpChange}/>
                     </div>
                     <div className='col-xs-12 col-md-3'>
                         <Pumpcounter title={Dict.previousCounter}
@@ -68,16 +70,16 @@ var Dispenser = React.createClass({
             }
             return (
                 <Modal  modalLink={this.props.modalLink} onSave={this.handleSave} onCancel={this.handleCancel}title={Dict.dispenserModalTitle} saveCaption={'Ok'} closeCaption={'Cancel'} validation={this.state.validation.errorMsgs.length > 0}>
-                <Panel type={'primary'} header={Dict.dispensercounters} >
+                    <Panel type={'primary'} header={Dict.dispensercounters} >
                             {validation}
                             {this.content()}
-                </Panel>
+                    </Panel>
 
                 </Modal>
                 )
         },
         handleSave: function () {
-            DispenserActions.saveDispenser(this.state);
+            DispenserActions.addDispenser(this.state);
         },
         handleCancel: function () {
             //trigger cancel edit
@@ -86,7 +88,7 @@ var Dispenser = React.createClass({
         handlePumpChange: function (e) {
             var value = e.target.value;
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: this.state.curCounter});
-            this.updateState({pumpIndex: parseInt(value), validation: this.validation});
+            this.updateState({pumpId: parseInt(value), validation: this.validation});
         },
         validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handlePrevChange: function (e) {
@@ -101,7 +103,7 @@ var Dispenser = React.createClass({
         updateState: function (newData) {
             //plug the newData to the suitable
             _.extend(this.state, newData);
-            var subtotals = DispenserStore.calcSubtotals(this.state.pumpIndex, this.state.prevCounter, this.state.curCounter);
+            var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter);
             this.setState(_.extend(
                 this.state, {
                     liters: subtotals.liters,

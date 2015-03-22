@@ -8,7 +8,7 @@ var Dispenserlink = React.createClass({
 
     render: function () {
         var dispenser = this.props.data;
-        var pump = PumpsStore.getPump(dispenser.pumpIndex);
+        var pump = PumpsStore.getPump(dispenser.pumpId);
         return (
             <div  className={'col-xs-2 ' + (dispenser.saved ? ' saved' : ' ')}  >
                 <div className='row text-center'>
@@ -27,7 +27,7 @@ var Dispenserlink = React.createClass({
                         <div className='col-xs-12'>
                             <div className='label label-default cp' data-toggle="modal"
                             data-target=".add-dispenser-modal">
-                                {pump.pname}
+                                {pump.pName}
                             </div>
                         </div>
                     </div>

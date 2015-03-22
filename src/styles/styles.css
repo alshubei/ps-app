@@ -41,3 +41,7 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .close {
     padding: 0 3px 3px 3px;
 }
+
+.disabled {
+    //pointer-events: none;
+}

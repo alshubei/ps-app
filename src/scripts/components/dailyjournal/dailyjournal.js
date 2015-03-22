@@ -2,7 +2,9 @@
 
 var React = require('react');
 var DailyJournalStore = require('../../stores/dailyjournal-store.js');
+var DatePickerStore = require('../../stores/datepicker-store.js');
 var JournalResultsStore = require('../../stores/journalresults-store.js');
+var PumpsStore = require('../../stores/pumps-store.js');
 var Dispenser = require('../../components/dailyjournal/dispenser.js');
 var Journal = require('../../components/dailyjournal/journal.js');
 var Journalresults = require('../../components/dailyjournal/journalresults.js');
@@ -10,6 +12,7 @@ var Panel = require('../../components/common/panel.js');
 var Debug = require('../../components/common/debug.js');
 var Save = require('../../components/dailyjournal/save-daily-journals.js');
 var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
+var PumpsActions = require('../../actions/pumps-actions.js');
 var _ = require('underscore');
 var img_pump = require('../../../images/pump.png');
 
@@ -19,6 +22,10 @@ var Dailyjournal = React.createClass({
     },
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
+        if (this.isMounted()) {
+            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getState().date);
+        }
+
     },
     componentWillUnmount: function () {
         this.unsubscribe();
@@ -31,6 +38,7 @@ var Dailyjournal = React.createClass({
         });
         return (
             <div>
+            {DatePickerStore.getState().date}
                 <div className='row'>
                     <div className='col-xs-12 col-md-12 col-lg-12' >
                         <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
@@ -61,7 +69,7 @@ var Dailyjournal = React.createClass({
             )
     },
     handleSaveJournals: function () {
-      DailyJournalActions.saveJournalsInServer();
+        DailyJournalActions.saveJournalsInServer();
     },
     onChange: function () {
         this.setState(DailyJournalStore.getData());

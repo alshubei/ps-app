@@ -25,12 +25,16 @@ var DispenserStore = Reflux.createStore({
     getState: function () {
         return _dispenser;
     },
-    calcSubtotals: function (pump, prevValue, currentValue) {
+    calcSubtotals: function (pumpId, prevValue, currentValue) {
         var liters = currentValue - prevValue;
-        var pump = PumpsStore.getPump(pump);
-        var literPrice = pump.fprice;
-        var subtotal = literPrice * liters;
-        return {liters: parseFloat(liters), subtotal: parseFloat(subtotal)};
+        var pump = PumpsStore.getPump(pumpId);
+        if (pump !== undefined) {
+            var literPrice = pump.fPrice;
+            var subtotal = literPrice * liters;
+            return {liters: parseFloat(liters), subtotal: parseFloat(subtotal)};
+        } else {
+            return {liters: 0, subtotal: 0};
+        }
     },
     validation: function (obj) {
         var result = {errorMsgs: []};
@@ -65,7 +69,7 @@ var DispenserStore = Reflux.createStore({
     }
 });
 
-var _dispenser = {dispenserIndex: 0, pumpIndex: 0, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
+var _dispenser = {dispenserIndex: 0, pumpId: 1, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
 
 
 module.exports = DispenserStore;
