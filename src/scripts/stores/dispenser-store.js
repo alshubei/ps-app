@@ -1,26 +1,25 @@
 //var Actions = require('../actions/pumps-actions.js');
 var Reflux = require('reflux');
-var PumpsStore = require('../../scripts/stores/pumps-store.js');
-var DailyJournalStore = require('../../scripts/stores/dailyjournal-store.js');
-var DispenserActions = require('../../scripts/actions/dispenser-actions.js');
-var PumpsActions = require('../../scripts/actions/pumps-actions.js');
+var PumpsStore = require('../stores/pumps-store.js');
+var DailyJournalStore = require('../stores/dailyjournal-store.js');
+var DispenserActions = require('../actions/dispenser-actions.js');
+var PumpsActions = require('../actions/pumps-actions.js');
 var _ = require('underscore');
+var Utils = require('../components/common/utils.js');
 
 var DispenserStore = Reflux.createStore({
     listenables: [DispenserActions, PumpsActions],
     editDispenser: function (index) {
-        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {dispenserIndex: index});
+        var js = require('../stores/dailyjournal-store.js');
+        _dispenser = _.findWhere(js.getData().dispensers, {dispenserIndex: index});
         if (_dispenser) {
             _dispenser.editing = true;
         }
         this.trigger(index);
     },
-    cancelEditDispenser: function (index) {
-        _dispenser = _.findWhere(DailyJournalStore.getData().dispensers, {dispenserIndex: index});
-        if (_dispenser) {
-            _dispenser.editing = false;
-        }
-        this.trigger(index);
+    cancelEditDispenser: function () {
+        _dispenser.editing = false;
+        this.trigger();
     },
     getState: function () {
         return _dispenser;

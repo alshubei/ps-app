@@ -67,7 +67,6 @@ switch ($urlQrStr) {
             //return the count or other more info as a POST response
             $result = $handler->prepare($sql);
             $result->execute();
-
         }
         print_r($count);
         break;
@@ -75,12 +74,11 @@ switch ($urlQrStr) {
         $date = $_GET['date'];
         $query = "SELECT
                 *
-                FROM dispensers";
-
-                //WHERE date = " . $date;
+                FROM dispensers
+                WHERE date = " . $date;
         $result = $handler->prepare($query);
         $result->execute();
-        ChromePhp::log('from PHP fetch dispensers params', $_GET['date']);
+        ChromePhp::log('from PHP date', $_GET['date']);
         print_r(json_encode($result->fetchAll(PDO::FETCH_ASSOC)));
         break;
 }

@@ -33,7 +33,7 @@ var Dispenser = React.createClass({
         },
         content: function () {
             var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter)
-            return <div className='input-lg'>
+            return <div className={'input-lg '}>
                 <div className='row'>
                     <div className='col-xs-12 col-md-2'>
                         <Pumpselect title={Dict.pump}
@@ -69,7 +69,13 @@ var Dispenser = React.createClass({
                 </Panel>;
             }
             return (
-                <Modal  modalLink={this.props.modalLink} onSave={this.handleSave} onCancel={this.handleCancel}title={Dict.dispenserModalTitle} saveCaption={'Ok'} closeCaption={'Cancel'} validation={this.state.validation.errorMsgs.length > 0}>
+                <Modal  modalLink={this.props.modalLink}
+                onSave={this.handleSave}
+                onCancel={this.handleCancel}
+                title={Dict.dispenserModalTitle}
+                saveCaption={'Ok'} closeCaption={'Cancel'}
+                validation={this.state.validation.errorMsgs.length > 0}
+                editing = {this.state.editing}>
                     <Panel type={'primary'} header={Dict.dispensercounters} >
                             {validation}
                             {this.content()}

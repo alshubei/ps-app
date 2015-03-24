@@ -8,10 +8,11 @@ var DatePickerStore = Reflux.createStore({
     listenables: [DatePickerActions],
     getState: function () {
         return _state;
-    },
-    changeDate: function (date) {
+    },getDate: function () {
+        return _state.date;
+    },changeDate: function (date) {
+        //here validate!!!!
         _state.date = date;
-        this.trigger(date);
     }
 });
 

@@ -2,7 +2,6 @@
 
 var React = require('react');
 var JournalStore = require('../../stores/journal-store.js');
-var DailyJournalStore = require('../../stores/dailyjournal-store.js');
 var Dispenserlink = require('../../components/dailyjournal/dispenserlink.js');
 var Debug = require('../../components/common/debug.js');
 var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
@@ -20,9 +19,10 @@ var Journal = React.createClass({
             return <Dispenserlink key={i}  data={item}/>
         });
         return (
-            <div  className={'col-xs-12 col-md-6 col-lg-4 '}>
-                <div  className={'thumbnail ' + (journal.isAllSaved ? ' saved' : ' ')}>
-                    <span className={'close ' + (journal.isSomeSaved ? ' saved' : ' ')} onClick={this.removeJournal}>x</span>
+
+            <div  className={'col-xs-12 col-md-6 col-lg-4'}>
+                <div className={'thumbnail ' + (journal.isAllSaved ? ' saved' : ' ')}>
+                    <span className={'close closejournal ' + (journal.isSomeSaved ? ' saved' : ' ')} onClick={this.removeJournal}>x</span>
                     <h3>{journal.fuel}</h3>
                     <div>Prev:
                         <span className="label label-default">{journal.prevCounter}</span>
@@ -37,15 +37,27 @@ var Journal = React.createClass({
                         <span className="label label-info">{journal.subtotal}</span>
                     </div>
                     <br />
-                    <div className='thumbnail row'>
+                    <div className=' thumbnail'>
+                        <div className=' row'>
+                            <div className='col-xs-12'>
                             {dispensers}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div >
+
 
             )
     },
     removeJournal: function () {
+        /*
+
+
+         <div className='thumbnail'>
+         {dispensers}
+         </div>
+         */
         DailyJournalActions.removeJournal(this.getJournal().fuel);
     }
 });

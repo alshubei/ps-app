@@ -10,24 +10,26 @@ var Dispenserlink = React.createClass({
         var dispenser = this.props.data;
         var pump = PumpsStore.getPump(dispenser.pumpId);
         return (
-            <div  className={'col-xs-2 ' + (dispenser.saved ? ' saved' : ' ')}  >
-                <div className='row text-center'>
-                    <div onClick={this.removeDispenser} className='col-xs-12 close'>
-                        <span>x</span>
+            <div  className={'dispenserlink' + (dispenser.saved ? ' saved' : ' ')}  >
+                <div className={'col-xs-2'}>
+                    <div className={'row  '} onClick={this.removeDispenser} className=''>
+                        <div className={'col-xs-12  close '} aria-hidden="true">
+                            <span>x</span>
+                        </div>
                     </div>
-                </div>
-                <div  onClick={this.editDispenser}>
-                    <div className='row'>
-                        <div className = 'col-xs-12' >
-                            <img className='cp' src={img_pump} data-toggle="modal"
-                            data-target=".add-dispenser-modal" />
-                        </div >
-                    </div>
-                    <div className='row '>
-                        <div className='col-xs-12'>
-                            <div className='label label-default cp' data-toggle="modal"
-                            data-target=".add-dispenser-modal">
+                    <div onClick={this.editDispenser}>
+                        <div className={'row'}>
+                            <div className={'col-xs-12'}>
+                                <img className='cp' src={img_pump} data-toggle="modal"
+                                data-target=".add-dispenser-modal" />
+                            </div>
+                        </div>
+                        <div className={'row'}>
+                            <div className={'col-xs-12'}>
+                                <div className='label label-default cp' data-toggle="modal"
+                                data-target=".add-dispenser-modal">
                                 {pump.pName}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -36,9 +38,11 @@ var Dispenserlink = React.createClass({
             )
     },
     editDispenser: function () {
+        console.log('this.props.data.dispenserIndex', this.props.data.dispenserIndex);
         DispenserActions.editDispenser(this.props.data.dispenserIndex);
     },
     removeDispenser: function () {
+
         DispenserActions.removeDispenser(this.props.data.dispenserIndex);
     }
 });

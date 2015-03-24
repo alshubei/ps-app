@@ -1,18 +1,52 @@
-pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-.string { color: green; }
-.number { color: darkorange; }
-.boolean { color: blue; }
-.null { color: magenta; }
-.key { color: red; }
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
 
+.string {
+    color: green;
+}
 
-.top5 { margin-top:5px; }
-.top7 { margin-top:7px; }
-.top10 { margin-top:10px; }
-.top15 { margin-top:15px; }
-.top17 { margin-top:17px; }
-.top30 { margin-top:30px; }
+.number {
+    color: darkorange;
+}
 
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: red;
+}
+
+.top5 {
+    margin-top: 5px;
+}
+
+.top7 {
+    margin-top: 7px;
+}
+
+.top10 {
+    margin-top: 10px;
+}
+
+.top15 {
+    margin-top: 15px;
+}
+
+.top17 {
+    margin-top: 17px;
+}
+
+.top30 {
+    margin-top: 30px;
+}
 
 .vcenter {
     display: inline-block;
@@ -23,10 +57,10 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .hb1 {
     border: 1px solid red;
 }
+
 .hb2 {
     border: 1px solid #000000;
 }
-
 
 .cp {
     cursor: pointer;
@@ -38,10 +72,26 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
     opacity: 0.6;
     pointer-events: none;
 }
+
 .close {
-    padding: 0 3px 3px 3px;
+    padding: 0 0 0 7px;
+}
+.close.closejournal {
+    padding: 7px;
 }
 
 .disabled {
-    //pointer-events: none;
+    pointer-events: none;
+}
+
+.hcenter {
+    text-align: center;
+}
+
+.np {
+    padding: 0;
+}
+
+.editing .modal-body{
+    background-color: beige;
 }

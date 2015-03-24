@@ -7,7 +7,7 @@ var DatePickerActions = require('../../actions/datepicker-actions.js');
 var Datepicker =
     React.createClass({
         getInitialState: function () {
-            return {date: Utils.formatDate(Date.now())};
+            return DatePickerStore.getState();
         },
         componentDidMount: function () {
             this.unsubscribe = DatePickerStore.listen(this._onChange);
@@ -16,28 +16,31 @@ var Datepicker =
           this.unsubscribe();
         },
         render: function () {
-            /*
-             <span className='lead bg-info'>
-             Date: {Utils.formatDate(DailyJournalStore.getDate())}
-             </span>
-             */
             return (
                 <span>
                     <label>Date:
-                        <input ref="dateInput" type="text" value={this.state.date} onChange={this.handleChangeDate}/>
+                        <input ref="date" type="text" value={this.state.date} onChange={this.handleChangeDate}/>
                     </label>
                     <button onClick={this.handleTodayClick}>Today</button>
-                    <button onClick={this.handleChangeDate} >Calendar</button>
+                    <button onClick={this.handleCalendarChangeDate} >Calendar</button>
                 </span>
 
                 )
         },
         handleTodayClick: function () {
-            DatePickerActions.changeDate(Utils.formatDate(Date.now()));
+            var date = Utils.formatDate(Date.now());
+            this.setState({date:  date});
+            DatePickerActions.changeDate(date);
         },
-        handleChangeDate: function (e) {
-            //validate that it is valid date YYYY-(/)MM-DD
-            DatePickerActions.changeDate(e.target.value);
+        handleChangeDate: function () {
+            var date = React.findDOMNode(this.refs.date).value;
+            this.setState({date: date});
+            console.log('React.FindDOMNode..date',date);
+            DatePickerActions.changeDate(date);
+        },
+        handleCalendarChangeDate: function () {
+            this.setState({date: React.findDOMNode(this.refs.date).value});
+            DatePickerActions.changeDate(this.state.date);
         },
         _onChange: function () {
             this.setState(DatePickerStore.getState());

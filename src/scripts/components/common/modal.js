@@ -11,7 +11,7 @@ var Modal =
         render: function () {
             var modalLink = 'modal fade ' + this.props.modalLink;
             return (
-                <div>
+                <div className={(this.props.editing == true ? 'editing' : '')}>
                     <div className={modalLink} tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content">

@@ -38,9 +38,9 @@ var Dailyjournal = React.createClass({
         });
         return (
             <div>
-            {DatePickerStore.getState().date}
+               {DatePickerStore.getDate()}
                 <div className='row'>
-                    <div className='col-xs-12 col-md-12 col-lg-12' >
+                    <div className='col-xs-12' >
                         <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
                             <span>+ </span>
                             <img src={img_pump}/>
@@ -49,14 +49,10 @@ var Dailyjournal = React.createClass({
                     </div>
                 </div>
 
-                <div className='row'>
-                    <div className='col-xs-12 col-md-12 col-lg-12' >
-                        <div className='top10 row'>
-                            <span>{journals}</span>
-                        </div>
-                    </div>
+                <div className='row  top10'>
+                    {journals}
                 </div>
-                <div className='row' >
+                <div className='row top10' >
                     <span className='col-xs-12 vcenter' >
                         <Panel type={'primary'} >
                             <Journalresults data={journalsData} />
