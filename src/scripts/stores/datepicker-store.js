@@ -13,6 +13,7 @@ var DatePickerStore = Reflux.createStore({
     },changeDate: function (date) {
         //here validate!!!!
         _state.date = date;
+        this.trigger(date);
     }
 });
 

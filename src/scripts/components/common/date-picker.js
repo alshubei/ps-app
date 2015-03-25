@@ -13,30 +13,33 @@ var Datepicker =
             this.unsubscribe = DatePickerStore.listen(this._onChange);
         },
         componentWillUnmount: function () {
-          this.unsubscribe();
+            this.unsubscribe();
         },
         render: function () {
+            /*
+             <button onClick={this.handleTodayClick}>Today</button>
+             <button onClick={this.handleCalendarChangeDate}>Calendar</button>
+             */
             return (
-                <span>
+                <span className={'input-lg'}>
                     <label>Date:
-                        <input ref="date" type="text" value={this.state.date} onChange={this.handleChangeDate}/>
+                        <input ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
                     </label>
-                    <button onClick={this.handleTodayClick}>Today</button>
-                    <button onClick={this.handleCalendarChangeDate} >Calendar</button>
+
                 </span>
 
                 )
         },
         handleTodayClick: function () {
             var date = Utils.formatDate(Date.now());
-            this.setState({date:  date});
+            this.setState({date: date});
             DatePickerActions.changeDate(date);
         },
         handleChangeDate: function () {
             var date = React.findDOMNode(this.refs.date).value;
             this.setState({date: date});
-            console.log('React.FindDOMNode..date',date);
             DatePickerActions.changeDate(date);
+
         },
         handleCalendarChangeDate: function () {
             this.setState({date: React.findDOMNode(this.refs.date).value});

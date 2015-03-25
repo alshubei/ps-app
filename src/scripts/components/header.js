@@ -3,13 +3,22 @@
 var React = require('react');
 
 var header = React.createClass({
-  render: function() {
-    return (
-        <div className="page-header">
-            <h1>{this.props.title} <small>| {this.props.subTitle}</small></h1>
-        </div>
-    );
-  }
+    render: function () {
+        var content =
+            <nav className="navbar navbar-default navbar-fixed-top">
+                <div className="container">
+                    <div className="navbar-header">
+                        {this.props.children}
+                    </div>
+                </div>
+            </nav>
+        return (
+            <div>
+                {content}
+            </div>
+
+            );
+    }
 });
 
 

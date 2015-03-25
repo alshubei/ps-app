@@ -13,11 +13,12 @@ var PumpsStore = Reflux.createStore({
         return _.findWhere(_pumpsList, {pumpId: id});
     },
     fetchPumpsFromServer: function (callback) {
+        //Only if server didn't execute PHP.
+        if (window.location.host === 'localhost:8000') {
+            return;
+        }
         $.get("server/query.php?data=pumps", function (result) {
-            //Only if server didn't execute PHP.
-            if (result.startsWith('<?php')) {
-                return;
-            }
+
             //cast from PHP resulting strings to correct (MYSQL) datatypes
             console.log('JSON.parse(result)',JSON.parse(result));
             var list =  _.map(JSON.parse(result), function (o) {

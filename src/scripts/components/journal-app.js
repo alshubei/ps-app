@@ -1,4 +1,3 @@
-
 'use strict';
 
 var React = require('react');
@@ -15,7 +14,7 @@ var Debug = require('../../scripts/components/common/debug.js');
 var Dict = require('../../scripts/components/common/dict.js');
 var Date = require('../../scripts/components/common/date-picker.js');
 var Utils = require('../../scripts/components/common/utils.js');
-var DatePickerStore = require('../stores/datepicker-store.js');
+var DatePickerStore = require('../stores/pumps-store.js');
 var _ = require('underscore');
 
 var JournalApp = React.createClass({
@@ -25,8 +24,7 @@ var JournalApp = React.createClass({
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
         if (this.isMounted()) {
-            console.log('DatePickerStore.getDate(.date is ', DatePickerStore.getDate());
-            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getDate());
+            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getState().date);
         }
     },
     componentWillUnmount: function () {
@@ -45,7 +43,7 @@ var JournalApp = React.createClass({
                 </Header>
 
                 <Panel type={'primary'} header={Dict.journal}>
-                    <Dailyjournal />
+                   <Dailyjournal />
                 </Panel>
                 <Footer title={Dict.footerTitle} subTitle={Dict.footerSubTitle}/>
             </div>
@@ -56,11 +54,5 @@ var JournalApp = React.createClass({
     }
 });
 
+
 module.exports = JournalApp;
-
-
-React.render(
-    <JournalApp />
-    , document.body); // jshint ignore:line
-
-

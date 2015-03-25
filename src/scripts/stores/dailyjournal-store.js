@@ -9,13 +9,10 @@ var Utils = require('../components/common/utils.js');
 var Reflux = require('reflux');
 var _ = require('underscore');
 
-var _something = 'something';
 
 var DailyJournalStore = Reflux.createStore({
     listenables: [DailyJournalActions, DispenserActions, DatePickerActions],
-    getSomthing: function () {
-        return _something;
-    },
+
     addDispenser: function (dispenser) {
         _addDispenser(dispenser);
         this.trigger(dispenser);
@@ -29,19 +26,21 @@ var DailyJournalStore = Reflux.createStore({
         _removeDispenser(index);
         this.trigger(index);
     },
-    editDispenser: function () {
-
-    },
-    cancelEditDispenser: function () {
-
-    },
     getJournals: function () {
+        console.log('_data.dispensers before', _data.dispensers);
+        console.log('_data.date', _data.date);
         var journals = _.chain(_data.dispensers)
+            .filter({date: _data.date})
             .map(function (o) {
                 return _.extend(_.extend({}, o), {pump: PumpsStore.getPump(o.pumpId)});
-            }).groupBy(function (o) {
+            })
+            .sortBy(function (o) {
                 return o.pump.fName;
-            }).pairs().value();
+            })
+            .groupBy(function (o) {
+                return o.pump.fName;
+            })
+            .pairs().value();
         return journals;
     },
     getData: function () {
@@ -75,27 +74,21 @@ var DailyJournalStore = Reflux.createStore({
 
     },
     fetchJournalsFromServer: function (date) {
+        _data.dispensers = _.filter(_data.dispensers, {saved: false});
         PumpsActions.fetchPumpsFromServer(function () {
             $.get("server/query.php?data=getjournals&date='" + date + "'", function (result) {
-                //Only if server didn't execute PHP.
-                if (result.startsWith('<?php')) {
-                    return;
-                }
-                console.log('dispensers from db:', result);
-                _data.dispensers = [];
                 var list = _.map(JSON.parse(result), function (o) {
                     return _.chain(o)
                         .extend(
                         {pumpId: parseInt(o.pumpId),
                             prevCounter: parseFloat(o.prevCounter),
                             curCounter: parseFloat(o.curCounter),
-                            date: o.date,
+                            date: Utils.formatDate(o.date),
                             saved: true})
                         .omit('id')
                         .value();
                 });
                 _.each(list, function (dispenser) {
-                    console.log('dispenser', dispenser);
                     var subtotals = DispenserStore.calcSubtotals(dispenser.pumpId, dispenser.prevCounter, dispenser.curCounter);
                     _.extend(dispenser, {liters: subtotals.liters, subtotal: subtotals.subtotal});
                     _addDispenser(dispenser);
@@ -108,24 +101,26 @@ var DailyJournalStore = Reflux.createStore({
 
     },
     changeDate: function (date) {
-        _data.date = date;
-        console.log('DailyJournalActions.fetchJournalsFromServer(date)', date);
-        DailyJournalActions.fetchJournalsFromServer(date);
+        _data.date = Utils.formatDate(date);
         this.trigger(date);
+        DailyJournalActions.fetchJournalsFromServer(date);
     }
 });
+/**** State*****/
+var _data = { dispensers: [], date: DatePickerStore.getDate()};
+/************/
+
 var _prepareInsertToDispensers = function (dispensers) {
     var result = _.chain(dispensers)
         .filter(function (o) {
             return !o.saved;
         })
         .map(function (o) {
-            return _.extend(o, {pump_id: PumpsStore.getPump(o.pumpId).pump_id, date: Utils.formatDate(DatePickerStore.getState().date)});
+            return _.extend(o, {pump_id: PumpsStore.getPump(o.pumpId).pump_id, date: Utils.formatDate(DatePickerStore.getDate())});
         })
         .value();
     return result;
 };
-var _data = { dispensers: []};
 
 
 function _addDispenser(dispenser) {
@@ -138,7 +133,7 @@ function _addDispenser(dispenser) {
     } else {
         //indexing the dispensers to uncouple it from the react UI based key thus identify it always
         dispenser.dispenserIndex = _data.dispensers.length;
-        _data.dispensers.push(_.extend({}, dispenser));
+        _data.dispensers.push(_.extend({date: DatePickerStore.getDate(), saved: false}, dispenser));
     }
 };
 

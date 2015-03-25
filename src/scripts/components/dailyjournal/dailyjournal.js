@@ -17,28 +17,14 @@ var _ = require('underscore');
 var img_pump = require('../../../images/pump.png');
 
 var Dailyjournal = React.createClass({
-    getInitialState: function () {
-        return DailyJournalStore.getData();
-    },
-    componentDidMount: function () {
-        this.unsubscribe = DailyJournalStore.listen(this.onChange);
-        if (this.isMounted()) {
-            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getState().date);
-        }
-
-    },
-    componentWillUnmount: function () {
-        this.unsubscribe();
-    },
     render: function () {
         //make journals out of dispensers
-        var journalsData = DailyJournalStore.getJournals(this.state.dispensers);
+        var journalsData = DailyJournalStore.getJournals();
         var journals = journalsData.map(function (item, i) {
             return <Journal key={i}   data={item} />;
         });
         return (
             <div>
-               {DatePickerStore.getDate()}
                 <div className='row'>
                     <div className='col-xs-12' >
                         <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
@@ -55,8 +41,8 @@ var Dailyjournal = React.createClass({
                 <div className='row top10' >
                     <span className='col-xs-12 vcenter' >
                         <Panel type={'primary'} >
-                            <Journalresults data={journalsData} />
-                            <Save onClick={this.handleSaveJournals} able={JournalResultsStore.getTotals(journalsData).notSaved > 0}/>
+                            <Journalresults />
+                            <Save onClick={this.handleSaveJournals} />
 
                         </Panel>
                     </span>
@@ -66,9 +52,6 @@ var Dailyjournal = React.createClass({
     },
     handleSaveJournals: function () {
         DailyJournalActions.saveJournalsInServer();
-    },
-    onChange: function () {
-        this.setState(DailyJournalStore.getData());
     }
 });
 

@@ -73,9 +73,10 @@ switch ($urlQrStr) {
     case "getjournals":
         $date = $_GET['date'];
         $query = "SELECT
-                *
-                FROM dispensers
-                WHERE date = " . $date;
+                d.*
+                FROM dispensers d
+                WHERE d.date = " . $date ;
+
         $result = $handler->prepare($query);
         $result->execute();
         ChromePhp::log('from PHP date', $_GET['date']);

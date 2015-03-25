@@ -1,3 +1,5 @@
+body { padding-top: 80px; }
+
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
@@ -94,4 +96,34 @@ pre {
 
 .editing .modal-body{
     background-color: beige;
+}
+
+.static-results {
+    position: fixed;
+    right: 150px;
+    top: 155px;
+    z-index: 100;
+
+}
+.navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+.navbar-brand {float:none;}
+
+.thumbnail.dispensers {
+    margin-bottom:  0;
+}
+
+.liters, .subtotal {
+    display: block;
+    font-size: 1.3em;
+    margin: 3px 0;
+    text-align: left;
+}
+
+.journal .prev-counter, .cur-counter {
+    width: 50%;
 }

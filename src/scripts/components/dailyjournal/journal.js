@@ -20,24 +20,15 @@ var Journal = React.createClass({
         });
         return (
 
-            <div  className={'col-xs-12 col-md-6 col-lg-4'}>
+            <div  className={' journal col-xs-12 col-md-6 col-lg-4'}>
                 <div className={'thumbnail ' + (journal.isAllSaved ? ' saved' : ' ')}>
                     <span className={'close closejournal ' + (journal.isSomeSaved ? ' saved' : ' ')} onClick={this.removeJournal}>x</span>
                     <h3>{journal.fuel}</h3>
-                    <div>Prev:
-                        <span className="label label-default">{journal.prevCounter}</span>
-                    </div>
-                    <div>Cur:
-                        <span className="label label-default">{journal.curCounter}</span>
-                    </div>
-                    <div>Due Liters:
-                        <span className="label label-default">{journal.liters}</span>
-                    </div>
-                    <div>Due Amount:
-                        <span className="label label-info">{journal.subtotal}</span>
-                    </div>
-                    <br />
-                    <div className=' thumbnail'>
+                    <input className={'prev-counter'} type='text' value={journal.prevCounter}/>
+                    <input className={'cur-counter'} type='text' value={journal.curCounter}/>
+                    <div className="liters label label-default">{journal.liters} Ltr.</div>
+                    <div className="subtotal label label-info">{journal.subtotal} YR</div>
+                    <div className=' dispensers thumbnail'>
                         <div className=' row'>
                             <div className='col-xs-12'>
                             {dispensers}
