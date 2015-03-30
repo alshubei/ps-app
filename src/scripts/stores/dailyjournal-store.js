@@ -27,8 +27,6 @@ var DailyJournalStore = Reflux.createStore({
         this.trigger(index);
     },
     getJournals: function () {
-        console.log('_data.dispensers before', _data.dispensers);
-        console.log('_data.date', _data.date);
         var journals = _.chain(_data.dispensers)
             .filter({date: _data.date})
             .map(function (o) {
@@ -54,7 +52,6 @@ var DailyJournalStore = Reflux.createStore({
         data.dispensers = _prepareInsertToDispensers(_data.dispensers);
         //mocking the server
         if (window.location.origin == 'http://localhost:8000') {
-            console.log('http://localhost:8000');
             _.map(data.dispensers, function (o) {
                 return _.extend(o, {saved: true});
             });

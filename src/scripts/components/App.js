@@ -1,21 +1,24 @@
-
 'use strict';
 
 var React = require('react');
+window.$ = window.jQuery = require('jquery');
+var bootstrap = require('bootstrap');
+
 var Dailyjournal = require('../../scripts/components/dailyjournal/dailyjournal.js');
 var Journalresults = require('../../scripts/components/dailyjournal/journalresults.js');
 var DailyJournalStore = require('../stores/dailyjournal-store.js');
 var DatePickerStore = require('../stores/datepicker-store.js');
 var DailyJournalActions = require('../actions/dailyjournal-actions.js');
-
 var Header = require('../../scripts/components/header.js');
 var Footer = require('../../scripts/components/footer.js');
 var Panel = require('../../scripts/components/common/panel.js');
 var Debug = require('../../scripts/components/common/debug.js');
-var Dict = require('../../scripts/components/common/dict.js');
+var Dict = require('../components/common/dict.js');
 var Date = require('../../scripts/components/common/date-picker.js');
 var Utils = require('../../scripts/components/common/utils.js');
 var DatePickerStore = require('../stores/datepicker-store.js');
+var Save = require('../components/dailyjournal/save-daily-journals.js');
+
 var _ = require('underscore');
 
 var JournalApp = React.createClass({
@@ -25,29 +28,38 @@ var JournalApp = React.createClass({
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
         if (this.isMounted()) {
-            console.log('DatePickerStore.getDate(.date is ', DatePickerStore.getDate());
-            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getDate());
+            //DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getDate());
         }
     },
     componentWillUnmount: function () {
         this.unsubscribe();
     },
     shouldComponentUpdate: function (nextProps, nextState) {
-        console.log('should update-rerender', DailyJournalStore.getData().dispensers);
         return true;
     },
     render: function () {
         return (
-            <div className='container' >
-                <Header>
-                    <Date />
-                    <Journalresults />
-                </Header>
-
-                <Panel type={'primary'} header={Dict.journal}>
-                    <Dailyjournal />
-                </Panel>
-                <Footer title={Dict.footerTitle} subTitle={Dict.footerSubTitle}/>
+            <div dir='rtl'>
+                <Header />
+                <div className='container' >
+                    <Panel type={'default'} >
+                        <Panel type={'default'} >
+                            <div className={'Grid flex-start'}>
+                                <div className={'Grid-cell '} >
+                                    <Date />
+                                </div>
+                                <div className={'Grid-cell mr10'}>
+                                    <Save />
+                                </div>
+                                <div className={'Grid-cell mr10'}>
+                                    <Journalresults />
+                                </div>
+                            </div>
+                        </Panel>
+                        <Dailyjournal />
+                    </Panel>
+                    <Footer  subTitle={Dict.tr('footerSubTitle')}/>
+                </div>
             </div>
             );
     },

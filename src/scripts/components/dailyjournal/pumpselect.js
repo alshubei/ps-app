@@ -22,17 +22,17 @@ var Pumpselect = React.createClass({
         this.unsubscribe();
     },
     getPumpsDataIfNeeded: function () {
-        PumpsActions.fetchPumpsFromServer();
+        //PumpsActions.fetchPumpsFromServer();
 
     },
     render: function () {
         var pumps = this.state.pumps.map(function (item, i) {
-            return <option key={i} value={item.pumpId}>{item.pName + '-' + item.fName}</option>
+            return <option key={i} value={item.pumpId}>{item.pName + '-' + Dict.tr(item.fName)}</option>
         }.bind(this));
         var selectedPumpId = this.props.selected;
         var pump = PumpsStore.getPump(selectedPumpId);
         return (
-            <div>
+            <div className={this.props.className}>
                 <div>{this.props.title}</div>
                 <div>
                     <select value={selectedPumpId} onChange={this.props.onChange}>
@@ -40,7 +40,7 @@ var Pumpselect = React.createClass({
                     </select>
                 </div>
                 <div className="label label-default">
-                    {pump !== undefined ? pump.fName : ''} ({pump !== undefined ? pump.fPrice : 0}/{Dict.liter})
+                    ({Dict.tr(pump.fPrice) }/{Dict.tr('liter')})
                 </div>
             </div>
             )

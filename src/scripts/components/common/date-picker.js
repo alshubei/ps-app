@@ -4,6 +4,8 @@ var React = require('react');
 var Utils = require('../../components/common/utils.js');
 var DatePickerStore = require('../../stores/datepicker-store.js');
 var DatePickerActions = require('../../actions/datepicker-actions.js');
+var Dict = require('../../components/common/dict.js');
+
 var Datepicker =
     React.createClass({
         getInitialState: function () {
@@ -16,18 +18,11 @@ var Datepicker =
             this.unsubscribe();
         },
         render: function () {
-            /*
-             <button onClick={this.handleTodayClick}>Today</button>
-             <button onClick={this.handleCalendarChangeDate}>Calendar</button>
-             */
             return (
-                <span className={'input-lg'}>
-                    <label>Date:
-                        <input ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
-                    </label>
-
-                </span>
-
+                <div className={'component component-datepicker input-lg-2 '}>
+                        <label>{Dict.tr('date')}:</label>
+                        <input className= 'input-lg-3' ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
+                </div>
                 )
         },
         handleTodayClick: function () {

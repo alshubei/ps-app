@@ -21,13 +21,13 @@ var Dailyjournal = React.createClass({
         //make journals out of dispensers
         var journalsData = DailyJournalStore.getJournals();
         var journals = journalsData.map(function (item, i) {
-            return <Journal key={i}   data={item} />;
+            return <Journal key={i}   data={item} className='Grid-cell  mr10'/>;
         });
         return (
             <div>
-                <div className='row'>
-                    <div className='col-xs-12' >
-                        <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal">
+                <div className='Grid flex-start'>
+                    <div className='Grid-cell' >
+                        <button className="btn btn-default"  data-toggle="modal" data-target=".add-dispenser-modal" onClick={this.handleAddDispenser}>
                             <span>+ </span>
                             <img src={img_pump}/>
                         </button>
@@ -35,23 +35,14 @@ var Dailyjournal = React.createClass({
                     </div>
                 </div>
 
-                <div className='row  top10'>
+                <div className='Grid flex-start top10'>
                     {journals}
-                </div>
-                <div className='row top10' >
-                    <span className='col-xs-12 vcenter' >
-                        <Panel type={'primary'} >
-                            <Journalresults />
-                            <Save onClick={this.handleSaveJournals} />
-
-                        </Panel>
-                    </span>
                 </div>
             </div>
             )
     },
-    handleSaveJournals: function () {
-        DailyJournalActions.saveJournalsInServer();
+    handleAddDispenser: function () {
+        PumpsActions.fetchPumpsFromServer();
     }
 });
 

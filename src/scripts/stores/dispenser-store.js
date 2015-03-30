@@ -6,6 +6,7 @@ var DispenserActions = require('../actions/dispenser-actions.js');
 var PumpsActions = require('../actions/pumps-actions.js');
 var _ = require('underscore');
 var Utils = require('../components/common/utils.js');
+var Dict = require('../components/common/dict.js');
 
 var DispenserStore = Reflux.createStore({
     listenables: [DispenserActions, PumpsActions],
@@ -39,11 +40,11 @@ var DispenserStore = Reflux.createStore({
         var result = {errorMsgs: []};
         if (obj.prevCounter.length == 0 || isNaN(obj.prevCounter)) {
             result.errorMsgs
-                .push({msg: 'previous is not valid!'});
+                .push({msg: Dict.tr('err_previous_not_valid')});
         }
         if (obj.curCounter.length == 0 || isNaN(obj.curCounter)) {
             result.errorMsgs
-                .push({msg: 'current is not valid!'});
+                .push({msg: Dict.tr('err_current_not_valid')});
         }
         if (result.errorMsgs.length > 0) {
             return result;
@@ -51,10 +52,10 @@ var DispenserStore = Reflux.createStore({
         var validateSemantic = function (obj) {
             var errors = [];
             if (parseFloat(obj.prevCounter) > parseFloat(obj.curCounter)) {
-                errors.push({msg: 'previous counter cannot be > than current!'});
+                errors.push({msg: Dict.tr('err_previous_gt_current')});
             }
             if (parseFloat(obj.prevCounter) === parseFloat(obj.curCounter) && parseFloat(obj.curCounter) == 0) {
-                errors.push({msg: 'counters should not have the same counters as zero'});
+                errors.push({msg: Dict.tr('err_counters_zeros')});
             }
             return errors;
         };

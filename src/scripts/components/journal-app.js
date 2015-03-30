@@ -31,7 +31,6 @@ var JournalApp = React.createClass({
         this.unsubscribe();
     },
     shouldComponentUpdate: function (nextProps, nextState) {
-        console.log('should update-rerender', DailyJournalStore.getData().dispensers);
         return true;
     },
     render: function () {

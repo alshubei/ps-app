@@ -20,7 +20,6 @@ var PumpsStore = Reflux.createStore({
         $.get("server/query.php?data=pumps", function (result) {
 
             //cast from PHP resulting strings to correct (MYSQL) datatypes
-            console.log('JSON.parse(result)',JSON.parse(result));
             var list =  _.map(JSON.parse(result), function (o) {
                     return _.extend(o, {pumpId: parseInt(o.pumpId)});
                 });
@@ -37,8 +36,15 @@ var PumpsStore = Reflux.createStore({
 var _pumpsList = [
     {pumpId: 1, pName: 'p1', fId: 0, fName: 'Petrol', fPrice: 100},
     {pumpId: 2, pName: 'p2', fId: 0, fName: 'Petrol', fPrice: 100},
-    {pumpId: 3, pName: 'd1', fId: 1, fName: 'Diesel', fPrice: 85}
+    {pumpId: 3, pName: 'd1', fId: 1, fName: 'Diesel', fPrice: 85},
+    {pumpId: 4, pName: 'k1', fId: 2, fName: 'Kerosin', fPrice: 70},
+    {pumpId: 5, pName: 'g1', fId: 3, fName: 'Gas', fPrice: 60}
 ];
 
+/*
+ ,
+ {pumpId: 2, pName: 'p2', fId: 0, fName: 'Petrol', fPrice: 100},
+ {pumpId: 3, pName: 'd1', fId: 1, fName: 'Diesel', fPrice: 85}
+ */
 
 module.exports = PumpsStore;

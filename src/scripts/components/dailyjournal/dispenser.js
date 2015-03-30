@@ -33,29 +33,38 @@ var Dispenser = React.createClass({
         },
         content: function () {
             var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter)
-            return <div className={'input-lg '}>
-                <div className='row'>
-                    <div className='col-xs-12 col-md-2'>
-                        <Pumpselect title={Dict.pump}
-                        selected={this.state.pumpId}
-                        onChange={this.handlePumpChange}/>
-                    </div>
-                    <div className='col-xs-12 col-md-3'>
-                        <Pumpcounter title={Dict.previousCounter}
-                        onChange={this.handlePrevChange} value={this.state.prevCounter} />
-                    </div>
-                    <div className='col-xs-12 col-md-4'>
-                        <Pumpcounter  title={Dict.currentCounter}
-                        onChange={this.handleCurChange} value={this.state.curCounter}  />
-                    </div>
-                    <div className='top17 col-xs-12'>
-                        <span  className="label label-default">{subtotals.liters}</span>
-                        <span> {Dict.liters} </span>
-                        <span className="label label-info">{subtotals.subtotal}</span>
-                        <span> {Dict.subTotal} </span>
+            return <div className='input-lg-2'>
+                <div className='Grid flex-start baseline'>
+                    <Pumpselect title={Dict.tr('pump')}
+                    selected={this.state.pumpId}
+                    onChange={this.handlePumpChange}
+                    className={'Grid-cell mr10'}/>
+
+                    <Pumpcounter
+                    title={Dict.tr('previousCounter')}
+                    onChange={this.handlePrevChange}
+                    value={this.state.prevCounter}
+                    className={'Grid-cell mr10'}/>
+
+                    <Pumpcounter
+                    title={Dict.tr('currentCounter')}
+                    onChange={this.handleCurChange}
+                    value={this.state.curCounter}
+                    className={'Grid-cell mr10'}/>
+
+                </div>
+                <div>
+                    <div className='Grid flex-start top17'>
+                        <span className={'Grid-cell mr10'}>
+                            <span  className="label label-default">{subtotals.liters}</span>
+                            <span> {Dict.tr('liters')} </span>
+                        </span>
+                        <span className={'Grid-cell mr10'}>
+                            <span className="label label-info">{subtotals.subtotal}</span>
+                            <span> {Dict.tr('subTotal')} </span>
+                        </span>
                     </div>
                 </div>
-
             </div>
         },
         render: function () {
@@ -69,19 +78,21 @@ var Dispenser = React.createClass({
                 </Panel>;
             }
             return (
-                <Modal  modalLink={this.props.modalLink}
-                onSave={this.handleSave}
-                onCancel={this.handleCancel}
-                title={Dict.dispenserModalTitle}
-                saveCaption={'Ok'} closeCaption={'Cancel'}
-                validation={this.state.validation.errorMsgs.length > 0}
-                editing = {this.state.editing}>
-                    <Panel type={'primary'} header={Dict.dispensercounters} >
+                <div className={'component component-dispenser'}>
+                    <Modal  modalLink={this.props.modalLink}
+                    onSave={this.handleSave}
+                    onCancel={this.handleCancel}
+                    title={Dict.tr('dispenserModalTitle')}
+                    saveCaption={Dict.tr('Ok')} closeCaption={Dict.tr('Cancel')}
+                    validation={this.state.validation.errorMsgs.length > 0}
+                    editing = {this.state.editing}>
+                        <Panel type={'primary'} header={Dict.tr('dispensercounters')} >
                             {validation}
                             {this.content()}
-                    </Panel>
+                        </Panel>
 
-                </Modal>
+                    </Modal>
+                </div>
                 )
         },
         handleSave: function () {

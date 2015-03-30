@@ -15,16 +15,13 @@ module.exports = function (grunt) {
     var pkgConfig = grunt.file.readJSON('package.json');
 
     grunt.initConfig({
-
         pkg: pkgConfig,
         webpack: {
             options: webpackDistConfig,
-
             dist: {
                 cache: false
             }
         },
-
         'webpack-dev-server': {
             options: {
                 hot: true,
@@ -38,7 +35,6 @@ module.exports = function (grunt) {
                 keepAlive: true
             }
         },
-
         connect: {
             options: {
                 port: 8000
@@ -79,53 +75,17 @@ module.exports = function (grunt) {
                     {
                         flatten: true,
                         expand: true,
-                        src: ['node_modules/bootstrap/dist/css/bootstrap.css'],
-                        dest: '<%= pkg.src %>/styles/'
-                    },
-                    {
-                        flatten: true,
-                        expand: true,
-                        src: ['node_modules/bootstrap/dist/js/bootstrap.js'],
-                        dest: '<%= pkg.dist %>/scripts/'
-                    },
-                    {
-                        flatten: true,
-                        expand: true,
-                        src: ['node_modules/bootstrap/dist/js/bootstrap.js'],
-                        dest: '<%= pkg.src %>/scripts/'
-                    },
-                    {
-                        flatten: true,
-                        expand: true,
-                        src: ['node_modules/bootstrap/bower_components/jquery/dist/jquery.js'],
-                        dest: '<%= pkg.dist %>/scripts/'
-                    },
-                    {
-                        flatten: true,
-                        expand: true,
-                        src: ['node_modules/bootstrap/bower_components/jquery/dist/jquery.js'],
-                        dest: '<%= pkg.src %>/scripts/'
-                    },
-                    {
-                        flatten: true,
-                        expand: true,
-                        src: ['node_modules/bootstrap/dist/css/bootstrap.css'],
-                        dest: '<%= pkg.dist %>/styles/'
-                    },
-                    // includes files within path
-                    {
-                        flatten: true,
-                        expand: true,
                         src: ['<%= pkg.src %>/*'],
                         dest: '<%= pkg.dist %>/',
                         filter: 'isFile'
                     },
                     {
-                        flatten: true,
                         expand: true,
-                        src: ['<%= pkg.src %>/images/*'],
-                        dest: '<%= pkg.dist %>/images/'
+                        dest: 'dist',
+                        cwd: 'src',
+                        src: ['**/main.js', '**/*.html', 'styles/css/*.css' , 'images/*.*', 'server/*.php']
                     }
+
                 ]
             }
         },
@@ -136,13 +96,27 @@ module.exports = function (grunt) {
                     {
                         dot: true,
                         src: [
-                            '<%= pkg.dist %>',
-                            '<%= pkg.src %>/styles/bootstrap.css'
+                            '<%= pkg.dist %>'
                         ]
                     }
                 ]
             }
-        }});
+        },
+        sass: {
+            dist: {
+                files: {
+                    './src/styles/css/main.css': './src/styles/sass/main.scss'
+                }
+            }
+        },
+        watch: {
+            sass: {
+                files: ['./src/styles/sass/**/**.scss'],
+                tasks: ['sass']
+            }
+
+        }
+    });
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
@@ -157,7 +131,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['karma']);
 
-    grunt.registerTask('build', ['clean', 'copy', 'webpack']);
+    grunt.registerTask('build', ['clean', 'sass', 'copy', 'webpack']);
 
     grunt.registerTask('default', []);
 }

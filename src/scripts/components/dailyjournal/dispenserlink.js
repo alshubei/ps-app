@@ -10,35 +10,24 @@ var Dispenserlink = React.createClass({
         var dispenser = this.props.data;
         var pump = PumpsStore.getPump(dispenser.pumpId);
         return (
-            <div  className={'dispenserlink' + (dispenser.saved ? ' saved' : ' ')}  >
-                <div className={'col-xs-2'}>
-                    <div className={'row  '} onClick={this.removeDispenser} className=''>
-                        <div className={'col-xs-12  close '} aria-hidden="true">
-                            <span>x</span>
-                        </div>
-                    </div>
-                    <div onClick={this.editDispenser}>
-                        <div className={'row'}>
-                            <div className={'col-xs-12'}>
-                                <img className='cp' src={img_pump} data-toggle="modal"
-                                data-target=".add-dispenser-modal" />
-                            </div>
-                        </div>
-                        <div className={'row'}>
-                            <div className={'col-xs-12'}>
-                                <div className='label label-default cp' data-toggle="modal"
-                                data-target=".add-dispenser-modal">
+            <div  className={'component component-dispenserlink Grid column-wrap mr10' + (dispenser.saved ? ' saved' : ' ')}  >
+                <span className={'Grid-cell w100 close hcenter'} onClick={this.removeDispenser} aria-hidden="true">
+                x
+                </span>
+                <img className='cp Grid-cell'
+                src={img_pump}
+                data-toggle="modal"
+                data-target=".add-dispenser-modal"
+                onClick={this.editDispenser}
+                />
+                <div className='label label-default cp Grid-cell w100' data-toggle="modal"
+                data-target=".add-dispenser-modal">
                                 {pump.pName}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             )
     },
     editDispenser: function () {
-        console.log('this.props.data.dispenserIndex', this.props.data.dispenserIndex);
         DispenserActions.editDispenser(this.props.data.dispenserIndex);
     },
     removeDispenser: function () {

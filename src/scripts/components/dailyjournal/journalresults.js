@@ -11,17 +11,17 @@ var Journalresults = React.createClass({
             var journalsData = DailyJournalStore.getJournals();
             var totals = JournalResultsStore.getTotals(journalsData);
             return <span>
-                <strong>{Dict.totalAmount}: </strong>
-                <span className='label label-primary'>{totals.notSaved}</span>
-                <span className='label label-default'>{totals.saved}</span>
-                <span className='label label-info'>{totals.saved + totals.notSaved}</span>
+                <strong>{Dict.tr('totalAmount')}: </strong>
+                <div className={'label label-default ' + (totals.notSaved == 0 ? ' hide' : '') }>{totals.notSaved}</div>
+                <div className={'label label-default gr2' + (totals.saved == 0 ? ' hide' : '')}>{totals.saved}</div>
+                <div className='label label-primary'>{totals.saved + totals.notSaved}</div>
             </span>
         },
         render: function () {
             return (
-                <span className='input-lg'>
+                <div className='component component-journalresults input-lg'>
                     {this.content()}
-                </span>)
+                </div>)
         }
     })
     ;

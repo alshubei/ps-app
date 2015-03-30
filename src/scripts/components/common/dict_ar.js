@@ -1,10 +1,27 @@
-module.exports = {
-    'headerTitle':'الشبعي للمحروقات',
-    'headerSubTitle': 'يومية القراءات',
-    'footerTitle':'',
-    'footerSubTitle': ' يومية القراءات | Prototype | @alshubei',
-    'journal':'يومية',
-    'dispensercounters':'القراءات'
-
-
-};
+module.exports = [
+    {word:'date', tr: 'التاريخ'},
+    {word:'totalAmount', tr: 'االاجمالي'},
+    {word:'saveJournals', tr: 'تخزين'},
+    {word:'Petrol', tr: 'بنزين'},
+    {word:'Diesel', tr: 'سولار'},
+    {word:'Kerosin', tr: 'كيروسين'},
+    {word:'Gas', tr: 'غاز'},
+    {word:'', tr:''},
+    {word:'pump', tr:'المضخة'},
+    {word:'previousCounter', tr:'القراءة السابقة'},
+    {word:'currentCounter', tr:'القراءة الحالية'},
+    {word:'dispenserModalTitle', tr:'القراءات'},
+    {word:'dispensercounters', tr:'القراءات'},
+    {word:'Ok', tr:'موافق'},
+    {word:'Cancel', tr:'إلغاء'},
+    {word:'err_counters_zeros', tr:'خطأ ـ كلا القراءتين صفر!'},
+    {word:'err_current_not_valid', tr:'خطأ ـ القراءة الحالية فيها غير ارقام!'},
+    {word:'err_previous_not_valid', tr:'خطأ ـ القراءة  السابقة فيها غير ارقام!'},
+    {word:'err_previous_gt_current', tr:'خطأ ـ القراءة الحالية يجب ان تكون اعلى من السابقة!'},
+    {word:'Ltr', tr:'لتر'},
+    {word:'YR', tr:'ريال'},
+    {word:'liters', tr:'لتر'},
+    {word:'liter', tr:'لتر'},
+    {word:'subTotal', tr:'إجمالي'},
+    {word:'footerSubTitle', tr: 'Dispenser Journals | Copy Rights mokhtar'}
+];
