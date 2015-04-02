@@ -75,12 +75,30 @@ switch ($urlQrStr) {
         $query = "SELECT
                 d.*
                 FROM dispensers d
-                WHERE d.date = " . $date ;
+                WHERE d.date = " . $date;
 
         $result = $handler->prepare($query);
         $result->execute();
         ChromePhp::log('from PHP date', $_GET['date']);
         print_r(json_encode($result->fetchAll(PDO::FETCH_ASSOC)));
+        break;
+    case "verifyuser":
+        $query = "SELECT
+                id,
+                name,
+                type
+                FROM users
+                WHERE
+                name = '" . $_POST['userId'] . "'"
+            . " AND
+                password = '" . $_POST['pwd'] . "'";
+        $result = $handler->prepare($query);
+        $result->execute();
+        if (sizeof($result->fetchAll(PDO::FETCH_ASSOC)) == '1') {
+            print_r('1');
+        }else {
+            print_r('0');
+        }
         break;
 }
 //INSERT INTO dispensers (date,pump_id,prevCounter,curCounter) VALUES (" . '2015-03-20' . ",0,)

@@ -38,7 +38,8 @@ var Dispenser = React.createClass({
                     <Pumpselect title={Dict.tr('pump')}
                     selected={this.state.pumpId}
                     onChange={this.handlePumpChange}
-                    className={'Grid-cell mr10'}/>
+                    className={'Grid-cell mr10'}
+                   />
 
                     <Pumpcounter
                     title={Dict.tr('previousCounter')}
@@ -68,10 +69,10 @@ var Dispenser = React.createClass({
             </div>
         },
         render: function () {
-            var validation = '';
+            var validation = {errorMsgs: []};
             if (this.state.validation.errorMsgs.length > 0) {
                 var errors = this.state.validation.errorMsgs.map(function (item, i) {
-                    return <div key={i} className='text-danger'>{item}</div>
+                    return <div key={i} className='text-danger'>{Dict.tr(item.msg)}</div>
                 }.bind(this));
                 validation = <Panel type={'danger'}>
                 {errors}
@@ -79,9 +80,10 @@ var Dispenser = React.createClass({
             }
             return (
                 <div className={'component component-dispenser'}>
-                    <Modal  modalLink={this.props.modalLink}
+                    <Modal  className={this.props.className}
                     onSave={this.handleSave}
                     onCancel={this.handleCancel}
+                    show={this.props.show}
                     title={Dict.tr('dispenserModalTitle')}
                     saveCaption={Dict.tr('Ok')} closeCaption={Dict.tr('Cancel')}
                     validation={this.state.validation.errorMsgs.length > 0}
@@ -95,6 +97,7 @@ var Dispenser = React.createClass({
                 </div>
                 )
         },
+        validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handleSave: function () {
             DispenserActions.addDispenser(this.state);
         },
@@ -107,7 +110,6 @@ var Dispenser = React.createClass({
             this.validation = DispenserStore.validation({prevCounter: this.state.prevCounter, curCounter: this.state.curCounter});
             this.updateState({pumpId: parseInt(value), validation: this.validation});
         },
-        validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handlePrevChange: function (e) {
             this.validation = DispenserStore.validation({prevCounter: e.target.value, curCounter: this.state.curCounter});
             this.updateState({prevCounter: e.target.value, validation: this.validation});

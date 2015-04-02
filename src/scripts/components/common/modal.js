@@ -1,18 +1,13 @@
 /** @jsx React.DOM */
 var React = require('react');
 
-
-//note that jquery is brought in a tricky way in index.html as script tag and in grunt copy task: TODO: integrate jquery as a
-// pre dependency for bootstrap using commonjs require..
-//require('bootstrap');
-
 var Modal =
     React.createClass({
         render: function () {
-            var modalLink = 'modal fade ' + this.props.modalLink;
             return (
                 <div  className={(this.props.editing == true ? 'editing' : '')}>
-                    <div className={modalLink} tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div className={'modal fade ' + this.props.className} tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div className={"modal-backdrop fade " + (this.props.show ? "  in" : "")}></div>
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -25,8 +20,8 @@ var Modal =
                                 {this.props.children}
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-default" data-dismiss="modal" onClick={this.props.onCancel}>{this.props.closeCaption}</button>
-                                    <button type="button" className={this.props.validation ? "btn  disabled" : "btn  btn-primary"} data-dismiss="modal" onClick={this.props.onSave}>{this.props.saveCaption}</button>
+                                    <button type="button" className="btn btn-default"  onClick={this.props.onCancel}>{this.props.closeCaption}</button>
+                                    <button type="button" className={this.props.validation ? "btn  disabled" : "btn  btn-primary"}  onClick={this.props.onSave}>{this.props.saveCaption}</button>
                                 </div>
                             </div>
                         </div>

@@ -21,7 +21,7 @@ var Datepicker =
             return (
                 <div className={'component component-datepicker input-lg-2 '}>
                         <label>{Dict.tr('date')}:</label>
-                        <input className= 'input-lg-3' ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
+                        <input autoFocus className= 'input-lg-3' ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
                 </div>
                 )
         },

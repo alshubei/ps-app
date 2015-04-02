@@ -1,12 +1,18 @@
 module.exports = [
     {word:'date', tr: 'التاريخ'},
-    {word:'totalAmount', tr: 'االاجمالي'},
+    {word:'totalAmount', tr: 'الاجمالي'},
     {word:'saveJournals', tr: 'تخزين'},
     {word:'Petrol', tr: 'بنزين'},
     {word:'Diesel', tr: 'سولار'},
     {word:'Kerosin', tr: 'كيروسين'},
     {word:'Gas', tr: 'غاز'},
     {word:'', tr:''},
+    {word:'loginTitle', tr:'تسجيل الدخول'},
+    {word:'loginName', tr:'الاسم'},
+    {word:'loginPass', tr:'كلمة المرور'},
+    {word:'loginClickCaption', tr:'موافق'},
+    {word:'plus', tr:'+'},
+    {word:'ar', tr:'ع'},
     {word:'pump', tr:'المضخة'},
     {word:'previousCounter', tr:'القراءة السابقة'},
     {word:'currentCounter', tr:'القراءة الحالية'},
@@ -23,5 +29,11 @@ module.exports = [
     {word:'liters', tr:'لتر'},
     {word:'liter', tr:'لتر'},
     {word:'subTotal', tr:'إجمالي'},
-    {word:'footerSubTitle', tr: 'Dispenser Journals | Copy Rights mokhtar'}
+    {word:'footerSubTitle', tr: 'Dispenser Journals | Copyrights MAl'},
+    {word:'login_err_attemp', tr: 'محاولة رقم'},
+    {word:'err_user_id_empty', tr: 'خطأ! ادخل الاسم'},
+    {word:'err_pwd_empty', tr: 'خطأ! ادخل كلمة المرور'},
+    {word:'logged_as', tr: 'مرحبا'},
+    {word:'err_user_pwd_notvalid', tr: 'خطأ! الاسم وكلمة المرور غير متطابقتان.'}
+
 ];

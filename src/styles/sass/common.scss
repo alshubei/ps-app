@@ -1,9 +1,15 @@
 body {
   padding-top: 120px;
 }
-.nomargin {
-  margin: 5px 0 7px 0;
+
+.nomargin-2 {
+  margin: 2px 0 7px 0;
 }
+
+.nomargin {
+  margin: 0;
+}
+
 .Grid {
   display: flex;
   flex-flow: row wrap;
@@ -28,6 +34,15 @@ body {
 .Grid-cell {
   width: auto;
 
+}
+
+.modal.fade.in {
+  display: block;
+  .modal-backdrop {
+    &.fade.in {
+      height: 100%;
+    }
+  }
 }
 
 .gr2 {
@@ -122,6 +137,9 @@ pre {
   background-color: lightgrey;
   opacity: 0.6;
   pointer-events: none;
+  &.primary {
+    background-color: #337ab7;
+  }
 }
 
 .w100 {

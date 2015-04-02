@@ -27,10 +27,10 @@ var Journal = React.createClass({
                     <h3>{Dict.tr(journal.fuel)}</h3>
                     <input className={'prev-counter'} type='text' value={journal.prevCounter}/>
                     <input className={'cur-counter'} type='text' value={journal.curCounter}/>
-                    <h3 className='nomargin'>
+                    <h3 className='nomargin-2'>
                         <span className=" label label-default">{journal.liters} {Dict.tr('Ltr')}.</span>
                     </h3>
-                    <h3 className='nomargin'>
+                    <h3 className='nomargin-2'>
                         <span className=" label label-default">{journal.subtotal} {Dict.tr('YR')}</span>
                     </h3>
                     <div className=' dispensers thumbnail'>

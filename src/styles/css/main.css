@@ -4,8 +4,11 @@ body {
 body {
   padding-top: 120px; }
 
+.nomargin-2 {
+  margin: 2px 0 7px 0; }
+
 .nomargin {
-  margin: 5px 0 7px 0; }
+  margin: 0; }
 
 .Grid {
   display: flex;
@@ -24,6 +27,11 @@ body {
 
 .Grid-cell {
   width: auto; }
+
+.modal.fade.in {
+  display: block; }
+  .modal.fade.in .modal-backdrop.fade.in {
+    height: 100%; }
 
 .gr2 {
   background-color: lightgrey; }
@@ -97,6 +105,8 @@ pre {
   background-color: lightgrey;
   opacity: 0.6;
   pointer-events: none; }
+  .saved.primary {
+    background-color: #337ab7; }
 
 .w100 {
   width: 100%; }
@@ -148,4 +158,20 @@ pre {
 /* Custom, iPhone Retina */
 .component-header .navbar-default {
   background-color: #337ab7; }
+
+.component-login.out {
+  display: none; }
+
+.component-langswitcher {
+  position: fixed;
+  top: 5px;
+  left: 18px;
+  z-index: 1035; }
+  .component-langswitcher .langswitcher {
+    border: 1px solid; }
+  .component-langswitcher.inlogin {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1; }
 

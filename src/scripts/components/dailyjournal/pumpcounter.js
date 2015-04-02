@@ -5,7 +5,7 @@ var pumpcounter = React.createClass({
         return (
             <div className={this.props.className}>
                 <div>{this.props.title}</div>
-                <input  type="text"  placeholder={this.props.placeHolder} value={this.props.value} onChange={this.props.onChange}></input>
+                <input  type="text"   placeholder={this.props.placeHolder} value={this.props.value} onChange={this.props.onChange}></input>
             </div>
             )
     }

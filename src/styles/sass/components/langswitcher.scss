@@ -1,0 +1,16 @@
+.component-langswitcher {
+  position: fixed;
+  top: 5px;
+  left: 18px;
+  z-index: 1035;
+  .langswitcher {
+    border: 1px solid;
+  }
+  &.inlogin {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+}

@@ -10,12 +10,12 @@ var Journalresults = React.createClass({
         content: function () {
             var journalsData = DailyJournalStore.getJournals();
             var totals = JournalResultsStore.getTotals(journalsData);
-            return <span>
+            return <div>
                 <strong>{Dict.tr('totalAmount')}: </strong>
                 <div className={'label label-default ' + (totals.notSaved == 0 ? ' hide' : '') }>{totals.notSaved}</div>
-                <div className={'label label-default gr2' + (totals.saved == 0 ? ' hide' : '')}>{totals.saved}</div>
-                <div className='label label-primary'>{totals.saved + totals.notSaved}</div>
-            </span>
+                <div className={'label label-default gr2' + ((totals.saved == 0 || totals.notSaved == 0) ? ' hide' : '')}>{totals.saved}</div>
+                <div className={'label label-primary ' + ((totals.notSaved > 0) ? ' ' : 'primary saved')}>{totals.saved + totals.notSaved}</div>
+            </div>
         },
         render: function () {
             return (

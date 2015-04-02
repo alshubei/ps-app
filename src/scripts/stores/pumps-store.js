@@ -17,7 +17,7 @@ var PumpsStore = Reflux.createStore({
         if (window.location.host === 'localhost:8000') {
             return;
         }
-        $.get("server/query.php?data=pumps", function (result) {
+        jQuery.get("server/query.php?data=pumps", function (result) {
 
             //cast from PHP resulting strings to correct (MYSQL) datatypes
             var list =  _.map(JSON.parse(result), function (o) {

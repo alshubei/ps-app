@@ -2,8 +2,12 @@ var DailyJournalActions = require('../actions/dailyjournal-actions.js');
 var DispenserActions = require('../actions/dispenser-actions.js');
 var PumpsActions = require('../actions/pumps-actions.js');
 var DatePickerActions = require('../actions/datepicker-actions.js');
+var LangSwitcherActions = require('../actions/langswitcher-actions.js');
+var LoginActions = require('../actions/login-actions.js');
 var PumpsStore = require('../stores/pumps-store.js');
 var DatePickerStore = require('../stores/datepicker-store.js');
+var LangSwitcherStore = require('../stores/langswitcher-store.js');
+var LoginStore = require('../stores/login-store.js');
 var DispenserStore = require('../stores/dispenser-store.js');
 var Utils = require('../components/common/utils.js');
 var Reflux = require('reflux');
@@ -11,10 +15,22 @@ var _ = require('underscore');
 
 
 var DailyJournalStore = Reflux.createStore({
-    listenables: [DailyJournalActions, DispenserActions, DatePickerActions],
-
+    listenables: [DailyJournalActions, DispenserActions, DatePickerActions, LangSwitcherActions, LoginActions],
+    showLoginModal: function () {
+        _data.showLoginModal = true;
+        this.trigger();
+    },
+    showDispenserModal: function () {
+        _data.showDispenserModal = true;
+        this.trigger();
+    },
+    hideDispenserModal: function () {
+        _data.showDispenserModal = false;
+        this.trigger();
+    },
     addDispenser: function (dispenser) {
         _addDispenser(dispenser);
+        _data.showDispenserModal = false;
         this.trigger(dispenser);
 
     },
@@ -45,7 +61,10 @@ var DailyJournalStore = Reflux.createStore({
 
         var now = Utils.formatDate(Date.now());
 
-        return {dispensers: _data.dispensers, date: now};
+        return _data;
+    },
+    cancelEditDispenser: function () {
+        this.hideDispenserModal();
     },
     saveJournalsInServer: function () {
         var data = {};
@@ -101,10 +120,25 @@ var DailyJournalStore = Reflux.createStore({
         _data.date = Utils.formatDate(date);
         this.trigger(date);
         DailyJournalActions.fetchJournalsFromServer(date);
+    },
+    switchLang: function (lang) {
+        this.trigger(lang);
+    },
+    hideLoginModal: function () {
+        _data.showLoginModal = false;
+        this.trigger();
     }
+
 });
 /**** State*****/
-var _data = { dispensers: [], date: DatePickerStore.getDate()};
+var _data = {
+    dispensers: [],
+    date: DatePickerStore.getDate(),
+    lang: LangSwitcherStore.getLang(),
+    user: LoginStore.getUser(),
+    showDispenserModal: false,
+    showLoginModal: false
+};
 /************/
 
 var _prepareInsertToDispensers = function (dispensers) {

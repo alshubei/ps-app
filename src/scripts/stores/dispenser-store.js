@@ -17,7 +17,13 @@ var DispenserStore = Reflux.createStore({
             _dispenser.editing = true;
         }
         this.trigger(index);
-    },
+    }
+    /*,
+    showDispenserModal: function () {
+        console.log('triggered in doepenser store');
+        this.trigger();
+    }
+    */,
     cancelEditDispenser: function () {
         _dispenser.editing = false;
         this.trigger();
@@ -40,11 +46,11 @@ var DispenserStore = Reflux.createStore({
         var result = {errorMsgs: []};
         if (obj.prevCounter.length == 0 || isNaN(obj.prevCounter)) {
             result.errorMsgs
-                .push({msg: Dict.tr('err_previous_not_valid')});
+                .push({msg: 'err_previous_not_valid'});
         }
         if (obj.curCounter.length == 0 || isNaN(obj.curCounter)) {
             result.errorMsgs
-                .push({msg: Dict.tr('err_current_not_valid')});
+                .push({msg: 'err_current_not_valid'});
         }
         if (result.errorMsgs.length > 0) {
             return result;
@@ -52,10 +58,10 @@ var DispenserStore = Reflux.createStore({
         var validateSemantic = function (obj) {
             var errors = [];
             if (parseFloat(obj.prevCounter) > parseFloat(obj.curCounter)) {
-                errors.push({msg: Dict.tr('err_previous_gt_current')});
+                errors.push({msg: 'err_previous_gt_current'});
             }
             if (parseFloat(obj.prevCounter) === parseFloat(obj.curCounter) && parseFloat(obj.curCounter) == 0) {
-                errors.push({msg: Dict.tr('err_counters_zeros')});
+                errors.push({msg: 'err_counters_zeros'});
             }
             return errors;
         };
