@@ -18,17 +18,17 @@ var Login =
             this.unsubscribe = LoginStore.listen(this._onChange);
             LoginActions.showLoginModal();
             setTimeout(function () {
-                React.findDOMNode(this.refs.user).focus();
-            }.bind(this), 100)
+                if (React.findDOMNode(this.refs.user)) React.findDOMNode(this.refs.user).focus();
+            }.bind(this), 100);
         },
         componentWillUnmount: function () {
             this.unsubscribe();
         },
         content: function () {
-            return <div className={'Grid flex-start'}>
+            return <div className={'component component-login Grid flex-start'}>
                 <label className='Grid-cell mr10'>{Dict.tr('loginName')}
                     <span> </span>
-                    <input autoFocus  ref='user'  type='text' />
+                    <input autoFocus  ref='user'   type='text' />
                 </label>
                 <label className='Grid-cell mr10'>{Dict.tr('loginPass')}
                     <span> </span>
@@ -47,31 +47,19 @@ var Login =
                 </div>
             }
             return (
-                <div className={'component component-login ' + (!this.props.show ? 'out' : '')} onKeyPress={this.handleKeyPress}>
-                    <div className={' '}  tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div className={"modal-backdrop fade " + (this.props.show ? "  in" : "")}></div>
-                        <div className="modal-dialog modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header" >
-                                    <div dir={LangSwitcherStore.getDefaultDir()}>
-                                        <Langswitcher className={'inlogin'}/>
-                                    </div>
-                                    <br/>
-                                    <p className="modal-title label label-info input-lg-2">{Dict.tr('loginTitle')}</p>
-                                    <span>  {Dict.tr('login_err_attemp') + ': ' + LoginStore.getAttemptNr()}</span>
-                                </div>
-                                <div className="modal-body">
-                                {this.content()}
-                                {validation}
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className={"btn  btn-primary"} data-dismiss='' onClick={this.handleLogin}>{Dict.tr('loginClickCaption')}</button>
-                                </div>
-                            </div>
-                        </div>
+                <Modal
+                show={this.props.show}
+                saveCaption={Dict.tr('loginClickCaption')}
+                title={Dict.tr('loginTitle')}
+                onSave={this.handleLogin}
+                onKeyPress={this.handleKeyPress}
+                >
+                    <div className='container' dir={LangSwitcherStore.getDefaultDir()}>
+                        <Langswitcher />
                     </div>
-
-                </div>
+                    {this.content()}
+                    {validation}
+                </Modal>
                 )
         },
         handleKeyPress: function (e) {

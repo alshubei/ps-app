@@ -8,7 +8,10 @@ var Panel = require('../../components/common/panel.js');
 var Pumpselect = require('../../components/dailyjournal/pumpselect.js');
 var Pumpcounter = require('../../components/dailyjournal/pumpcounter.js');
 var DispenserStore = require('../../stores/dispenser-store.js');
+var DatePickerStore = require('../../stores/datepicker-store.js');
 var DispenserActions = require('../../actions/dispenser-actions.js');
+var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
+var DatePickerActions = require('../../actions/datepicker-actions.js');
 var PumpsActions = require('../../actions/pumps-actions.js');
 var Debug = require('../../components/common/debug.js');
 var _ = require('underscore');
@@ -32,26 +35,32 @@ var Dispenser = React.createClass({
             this.setState(DispenserStore.getState());
         },
         content: function () {
-            var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter)
-            return <div className='input-lg-2'>
+            var subtotals = DispenserStore.calcSubtotals(this.state.pumpId, this.state.prevCounter, this.state.curCounter);
+            return <div className={'component component-dispenser input-lg-2 ' + (this.state.editing == true ? 'editing' : '') } >
                 <div className='Grid flex-start baseline'>
                     <Pumpselect title={Dict.tr('pump')}
                     selected={this.state.pumpId}
                     onChange={this.handlePumpChange}
                     className={'Grid-cell mr10'}
-                   />
+                    />
 
                     <Pumpcounter
                     title={Dict.tr('previousCounter')}
                     onChange={this.handlePrevChange}
+                    placeHolder={Dict.tr('previousCounter')}
                     value={this.state.prevCounter}
-                    className={'Grid-cell mr10'}/>
+                    className={'Grid-cell mr10'}
+                    />
 
                     <Pumpcounter
                     title={Dict.tr('currentCounter')}
                     onChange={this.handleCurChange}
+                    placeHolder={Dict.tr('currentCounter')}
                     value={this.state.curCounter}
-                    className={'Grid-cell mr10'}/>
+                    className={'Grid-cell mr10'}
+                    />
+
+
 
                 </div>
                 <div>
@@ -79,27 +88,26 @@ var Dispenser = React.createClass({
                 </Panel>;
             }
             return (
-                <div className={'component component-dispenser'}>
-                    <Modal  className={this.props.className}
-                    onSave={this.handleSave}
-                    onCancel={this.handleCancel}
-                    show={this.props.show}
-                    title={Dict.tr('dispenserModalTitle')}
-                    saveCaption={Dict.tr('Ok')} closeCaption={Dict.tr('Cancel')}
-                    validation={this.state.validation.errorMsgs.length > 0}
-                    editing = {this.state.editing}>
-                        <Panel type={'primary'} header={Dict.tr('dispensercounters')} >
-                            {validation}
-                            {this.content()}
-                        </Panel>
+                <Modal
+                show={this.props.show}
+                title={Dict.tr('dispensercounters')}
+                onSave={this.handleSave}
+                saveCaption={Dict.tr('Ok')}
+                closeCaption={Dict.tr('Cancel')}
+                onCancel={this.handleCancel}
+                validation={this.state.validation.errorMsgs.length > 0}
+                >
+                      {validation}
+                      {this.content()}
+                </Modal>
 
-                    </Modal>
-                </div>
                 )
         },
         validation: {prevCounter: '', currentCounter: '', errorMsgs: []},
         handleSave: function () {
+            //I will need to chain/sync this using promises
             DispenserActions.addDispenser(this.state);
+            DailyJournalActions.getJournalDays(DatePickerStore.getDate());
         },
         handleCancel: function () {
             //trigger cancel edit

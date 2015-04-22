@@ -1,0 +1,18 @@
+.component-journals-calendar {
+  .item {
+    padding: 3px;
+    background-color: #337ab7;
+    margin-bottom: 5px;
+    &:hover {
+      color:#ff0; background-color:#00f;
+    }
+
+    &.saved-journal-day {
+      background-color: #000000;
+    }
+    &.current-journal-day {
+      background-color: pink;
+    }
+  }
+
+}

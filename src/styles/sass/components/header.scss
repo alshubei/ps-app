@@ -1,5 +1,11 @@
 .component-header {
   .navbar-default {
     background-color: #337ab7;
+    .navbar-brand {
+
+      img {
+        margin-top: -20px;
+      }
+    }
   }
 }

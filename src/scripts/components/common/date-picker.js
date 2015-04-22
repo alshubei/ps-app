@@ -4,6 +4,7 @@ var React = require('react');
 var Utils = require('../../components/common/utils.js');
 var DatePickerStore = require('../../stores/datepicker-store.js');
 var DatePickerActions = require('../../actions/datepicker-actions.js');
+var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 var Dict = require('../../components/common/dict.js');
 
 var Datepicker =
@@ -19,26 +20,17 @@ var Datepicker =
         },
         render: function () {
             return (
-                <div className={'component component-datepicker input-lg-2 '}>
+                <div className={'component component-datepicker  '}>
                         <label>{Dict.tr('date')}:</label>
-                        <input autoFocus className= 'input-lg-3' ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
+                        <input autoFocus className= '' ref="date" type="date" value={this.state.date} onChange={this.handleChangeDate}/>
                 </div>
                 )
         },
-        handleTodayClick: function () {
-            var date = Utils.formatDate(Date.now());
-            this.setState({date: date});
-            DatePickerActions.changeDate(date);
-        },
         handleChangeDate: function () {
             var date = React.findDOMNode(this.refs.date).value;
-            this.setState({date: date});
+            //this.setState({date: date});
             DatePickerActions.changeDate(date);
 
-        },
-        handleCalendarChangeDate: function () {
-            this.setState({date: React.findDOMNode(this.refs.date).value});
-            DatePickerActions.changeDate(this.state.date);
         },
         _onChange: function () {
             this.setState(DatePickerStore.getState());

@@ -1,15 +1,14 @@
 //var Actions = require('../actions/pumps-actions.js');
 var Reflux = require('reflux');
 var PumpsStore = require('../stores/pumps-store.js');
-var DailyJournalStore = require('../stores/dailyjournal-store.js');
 var DispenserActions = require('../actions/dispenser-actions.js');
 var PumpsActions = require('../actions/pumps-actions.js');
 var _ = require('underscore');
-var Utils = require('../components/common/utils.js');
 var Dict = require('../components/common/dict.js');
 
 var DispenserStore = Reflux.createStore({
     listenables: [DispenserActions, PumpsActions],
+
     editDispenser: function (index) {
         var js = require('../stores/dailyjournal-store.js');
         _dispenser = _.findWhere(js.getData().dispensers, {dispenserIndex: index});
@@ -17,13 +16,7 @@ var DispenserStore = Reflux.createStore({
             _dispenser.editing = true;
         }
         this.trigger(index);
-    }
-    /*,
-    showDispenserModal: function () {
-        console.log('triggered in doepenser store');
-        this.trigger();
-    }
-    */,
+    },
     cancelEditDispenser: function () {
         _dispenser.editing = false;
         this.trigger();
@@ -75,7 +68,7 @@ var DispenserStore = Reflux.createStore({
     }
 });
 
-var _dispenser = {dispenserIndex: 0, pumpId: 1, prevCounter: 0, curCounter: 0, validation: {errorMsgs: []} };
+var _dispenser = {dispenserIndex: 0, pumpId: 1, prevCounter: 0, curCounter: 0, personnelId: 1, validation: {errorMsgs: []} };
 
 
 module.exports = DispenserStore;

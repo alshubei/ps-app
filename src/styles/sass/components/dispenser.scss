@@ -1,5 +1,6 @@
 .component-dispenser {
-
-
-
+  &.editing {
+    padding: 10px;
+    background-color: lightgray;
+  }
 }

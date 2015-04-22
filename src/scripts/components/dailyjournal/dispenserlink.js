@@ -2,7 +2,9 @@
 
 var React = require('react');
 var DispenserActions = require('../../actions/dispenser-actions.js');
+var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 var PumpsStore = require('../../stores/pumps-store.js');
+var DatePickerStore = require('../../stores/datepicker-store.js');
 var img_pump = require('../../../images/pump.png');
 var Dispenserlink = React.createClass({
 
@@ -14,14 +16,11 @@ var Dispenserlink = React.createClass({
                 <span className={'Grid-cell w100 close hcenter'} onClick={this.removeDispenser} aria-hidden="true">
                 x
                 </span>
-                <img className='cp Grid-cell'
+                <img className='b-gr cp Grid-cell'
                 src={img_pump}
-                data-toggle="modal"
-                data-target=".add-dispenser-modal"
                 onClick={this.editDispenser}
                 />
-                <div className='label label-default cp Grid-cell w100' data-toggle="modal"
-                data-target=".add-dispenser-modal">
+                <div className='label label-default cp Grid-cell w100' onClick={this.editDispenser}>
                                 {pump.pName}
                 </div>
             </div>
@@ -29,10 +28,11 @@ var Dispenserlink = React.createClass({
     },
     editDispenser: function () {
         DispenserActions.editDispenser(this.props.data.dispenserIndex);
+        DispenserActions.showDispenserModal();
     },
     removeDispenser: function () {
-
         DispenserActions.removeDispenser(this.props.data.dispenserIndex);
+        DailyJournalActions.getJournalDays(DatePickerStore.getDate());
     }
 });
 

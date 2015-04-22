@@ -26,10 +26,12 @@ module.exports = {
     },
 
     plugins: [
+
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.AggressiveMergingPlugin()
+
     ],
 
     resolve: {

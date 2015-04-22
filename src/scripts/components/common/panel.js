@@ -14,7 +14,7 @@ var Panel = React.createClass({
             ;
         }
         return (
-            <div className={"component component-panel vcenter panel panel-" + this.props.type}>
+            <div className={"component component-panel vcenter panel panel-" + this.props.type + ' ' + this.props.additionalClasses}>
                 {header}
                 <div className="panel-body">
                             {this.props.children}

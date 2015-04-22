@@ -14,7 +14,7 @@ var Debug = require('../../scripts/components/common/debug.js');
 var Dict = require('../../scripts/components/common/dict.js');
 var Date = require('../../scripts/components/common/date-picker.js');
 var Utils = require('../../scripts/components/common/utils.js');
-var DatePickerStore = require('../stores/pumps-store.js');
+var DatePickerStore = require('../stores/datepicker-store.js');
 var _ = require('underscore');
 
 var JournalApp = React.createClass({
@@ -24,7 +24,7 @@ var JournalApp = React.createClass({
     componentDidMount: function () {
         this.unsubscribe = DailyJournalStore.listen(this.onChange);
         if (this.isMounted()) {
-            DailyJournalActions.fetchJournalsFromServer(DatePickerStore.getState().date);
+            DailyJournalActions.getJournals(DatePickerStore.getDate());
         }
     },
     componentWillUnmount: function () {

@@ -8,18 +8,18 @@ var Dict = require('../common/dict.js');
 var Journalresults = React.createClass({
 
         content: function () {
-            var journalsData = DailyJournalStore.getJournals();
+            var journalsData = DailyJournalStore.makeJournals();
             var totals = JournalResultsStore.getTotals(journalsData);
             return <div>
                 <strong>{Dict.tr('totalAmount')}: </strong>
-                <div className={'label label-default ' + (totals.notSaved == 0 ? ' hide' : '') }>{totals.notSaved}</div>
-                <div className={'label label-default gr2' + ((totals.saved == 0 || totals.notSaved == 0) ? ' hide' : '')}>{totals.saved}</div>
-                <div className={'label label-primary ' + ((totals.notSaved > 0) ? ' ' : 'primary saved')}>{totals.saved + totals.notSaved}</div>
+                <strong className={'label label-default ' + (totals.notSaved == 0 ? ' hide' : '') }>{totals.notSaved}</strong>
+                <strong className={'label label-default gr2' + ((totals.saved == 0 || totals.notSaved == 0) ? ' hide' : '')}>{totals.saved}</strong>
+                <strong className={'label label-primary ' + ((totals.notSaved > 0) ? ' ' : 'primary saved')}>{totals.saved + totals.notSaved}</strong>
             </div>
         },
         render: function () {
             return (
-                <div className='component component-journalresults input-lg'>
+                <div className='component component-journalresults'>
                     {this.content()}
                 </div>)
         }

@@ -17,6 +17,9 @@ body {
   &.baseline {
     align-items: baseline;
   }
+  &.stretch {
+    align-items: stretch;
+  }
   &.column-wrap {
     flex-flow: column wrap;
   }
@@ -36,8 +39,41 @@ body {
 
 }
 
-.modal.fade.in {
-  display: block;
+.content-container {
+  align-items: center;
+  .home-panel {
+    margin: 0;
+    &.control-panel {
+      margin: 0 0 0 10px;
+      flex-shrink: 0;
+      flex-grow: 0;
+      flex-basis: 330px;
+    }
+    &.content-panel {
+      margin: 0 0 0 10px;
+      flex-shrink: 0;
+      flex-grow: 1;
+      flex-basis: 50%;
+    }
+  }
+}
+
+.mymodal.fade {
+  &.in {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    outline: 0;
+
+  }
+  &.out {
+    display: none;
+  }
   .modal-backdrop {
     &.fade.in {
       height: 100%;
@@ -49,8 +85,31 @@ body {
   background-color: lightgrey;
 }
 
+.logout-link {
+  color: #ffffff;
+}
+
+.b-gr {
+  border: 1px solid darkgray;
+}
+
+.mtb10 {
+  margin: 10px 0 10px 0;
+}
+.mr5 {
+  margin-right: 5px;
+}
+
 .mr10 {
   margin-right: 10px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.gr-color {
+  color: #ccc;
 }
 
 pre {
@@ -103,6 +162,9 @@ pre {
   margin-top: 30px;
 }
 
+.input-lg-1 {
+  font-size: 10px;
+}
 .input-lg-2 {
   font-size: 18px;
 }
@@ -128,6 +190,10 @@ pre {
   border: 1px solid #000000;
 }
 
+.hb3 {
+  border: 1px solid #ffff00;
+}
+
 .cp {
   cursor: pointer;
 }
@@ -146,14 +212,6 @@ pre {
   width: 100%;
 }
 
-.close {
-  //padding: 0 0 0 7px;
-}
-
-.close.closejournal {
-  padding: 7px;
-}
-
 .disabled {
   pointer-events: none;
 }
@@ -166,8 +224,20 @@ pre {
   padding: 0;
 }
 
-.editing .modal-body {
-  background-color: beige;
+.addDispenserIcon {
+  display: flex;
+  .plus {
+    display: inline;
+    margin: 0;
+  }
+}
+
+.error {
+  color: red;
+}
+
+.message {
+  color: brown;
 }
 
 /*

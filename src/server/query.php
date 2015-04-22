@@ -30,56 +30,70 @@ switch ($urlQrStr) {
         print_r(json_encode($result->fetchAll(PDO::FETCH_ASSOC)));
         break;
     case "savejournals":
-        //optimistic response to feedback that insertion is done!
-        $count = 1;
-        //do the db insertion
-        $dispensers = $_POST['dispensers'];
-        foreach ($dispensers as &$row) {
+        try {
+            //do the db insertion
+            $dispensers = $_POST['dispensers'];
+            foreach ($dispensers as &$row) {
 
-            //$row = $_POST['dispensers'][0];
-            ChromePhp::log('from PHP', $row);
+                //$row = $_POST['dispensers'][0];
+                //ChromePhp::log('from PHP $row', $row);
 
-            //filter out the not needed key-values, coming from the frontend json
-            $matchedKeys = array_filter(array_keys($row),
-                function ($var) {
-                    return in_array($var,
-                        array("date", "pumpId", "prevCounter", "curCounter")) == true;
-                });
-            $filteredRow = array_intersect_key($row, array_flip($matchedKeys));
-            ChromePhp::log('from PHP after filter', $filteredRow);
 
-            //build INSERT statement
-            $date = "'" . $filteredRow['date'] . "'";
-            $pumpId = $filteredRow['pumpId'];
-            $prevCounter = $filteredRow['prevCounter'];
-            $curCounter = $filteredRow['curCounter'];
-            $values = implode(", ", array($date, $pumpId, $prevCounter, $curCounter));
-            ChromePhp::log('from PHP values', $values);
-            $sql = "INSERT INTO `dispensers` (`date`, `pumpId`, `prevCounter`, `curCounter`) VALUES ($values)";
-            ChromePhp::log('from PHP sql is', $sql);
-            //filter the front end related keys out
+                //filter out the not needed key-values, coming from the frontend json
+                $matchedKeys = array_filter(array_keys($row),
+                    function ($var) {
+                        return in_array($var,
+                            array("userId", "date", "pumpId", "prevCounter", "curCounter")) == true;
+                    });
+                $filteredRow = array_intersect_key($row, array_flip($matchedKeys));
 
-            //$escaped_values = array_map('mysql_real_escape_string', array_values($filteredRow));
-            //ChromePhp::log('from PHP escaped values', $escaped_values);
-            //$values = implode(", ", $escaped_values);
-
-            //print_r(json_encode($_POST['dispensers']));
-            //return the count or other more info as a POST response
-            $result = $handler->prepare($sql);
-            $result->execute();
+                //build INSERT statement
+                $user_id = $filteredRow['userId'];
+                $date = "'" . $filteredRow['date'] . "'";
+                $pumpId = $filteredRow['pumpId'];
+                $prevCounter = $filteredRow['prevCounter'];
+                $curCounter = $filteredRow['curCounter'];
+                $values = implode(", ", array($user_id, $date, $pumpId, $prevCounter, $curCounter));
+                $sql = "INSERT INTO `dispensers` (`user_id` ,`date`, `pumpId`, `prevCounter`, `curCounter`) VALUES ($values)";
+                $result = $handler->prepare($sql);
+                $result->execute();
+            }
+            print_r(json_encode(array('lastInsertId' => $handler->lastInsertId())));
+            break;
+        } catch (PDOException $e) {
+            print_r(json_encode(array('error' => $e->getMessage())));
+            die();
         }
-        print_r($count);
-        break;
     case "getjournals":
         $date = $_GET['date'];
         $query = "SELECT
                 d.*
                 FROM dispensers d
                 WHERE d.date = " . $date;
+        if (isset($_GET['userid'])) {
+            $query = $query . " AND d.user_id = " . (int)$_GET['userid'];
+        }
+        ChromePhp::log('PHP getjournals', $query);
 
         $result = $handler->prepare($query);
         $result->execute();
-        ChromePhp::log('from PHP date', $_GET['date']);
+        print_r(json_encode($result->fetchAll(PDO::FETCH_ASSOC)));
+        break;
+    case "getjournaldays":
+        $dateFrom = $_GET['datefrom'];
+        $dateTo = $_GET['dateto'];
+        $query = "SELECT
+                DISTINCT d.date
+                FROM dispensers d
+                WHERE d.date >= " . $dateFrom .
+                "AND d.date <=" . $dateTo;
+        if (isset($_GET['userid'])) {
+            $query = $query . " AND d.user_id = " . (int)$_GET['userid'];
+        }
+        ChromePhp::log('from PHP sql getjournalday', $query);
+
+        $result = $handler->prepare($query);
+        $result->execute();
         print_r(json_encode($result->fetchAll(PDO::FETCH_ASSOC)));
         break;
     case "verifyuser":
@@ -90,18 +104,16 @@ switch ($urlQrStr) {
                 FROM users
                 WHERE
                 name = '" . $_POST['userId'] . "'"
-            . " AND
+            . " AND BINARY
                 password = '" . $_POST['pwd'] . "'";
         $result = $handler->prepare($query);
         $result->execute();
         if (sizeof($result->fetchAll(PDO::FETCH_ASSOC)) == '1') {
             print_r('1');
-        }else {
+        } else {
             print_r('0');
         }
         break;
 }
-//INSERT INTO dispensers (date,pump_id,prevCounter,curCounter) VALUES (" . '2015-03-20' . ",0,)
-
 
 ?>

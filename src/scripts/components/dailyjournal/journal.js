@@ -2,6 +2,7 @@
 
 var React = require('react');
 var JournalStore = require('../../stores/journal-store.js');
+var DatePickerStore = require('../../stores/datepicker-store.js');
 var Dispenserlink = require('../../components/dailyjournal/dispenserlink.js');
 var Debug = require('../../components/common/debug.js');
 var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
@@ -21,18 +22,18 @@ var Journal = React.createClass({
         });
         return (
 
-            <div  className={' component component-journal ' + this.props.className}>
-                <div className={'thumbnail ' + (journal.isAllSaved ? ' saved' : ' ')}>
+            <div  className={'component component-journal ' + this.props.className}>
+                <div className={'thumbnail modal-content' + (journal.isAllSaved ? ' saved' : ' ')}>
                     <span className={'close closejournal ' + (journal.isSomeSaved ? ' saved' : ' ')} onClick={this.removeJournal}>x</span>
-                    <h3>{Dict.tr(journal.fuel)}</h3>
+                    <h4>{Dict.tr(journal.fuel)}</h4>
                     <input className={'prev-counter'} type='text' value={journal.prevCounter}/>
                     <input className={'cur-counter'} type='text' value={journal.curCounter}/>
-                    <h3 className='nomargin-2'>
+                    <h4 className='nomargin-2'>
                         <span className=" label label-default">{journal.liters} {Dict.tr('Ltr')}.</span>
-                    </h3>
-                    <h3 className='nomargin-2'>
+                    </h4>
+                    <h4 className='nomargin-2'>
                         <span className=" label label-default">{journal.subtotal} {Dict.tr('YR')}</span>
-                    </h3>
+                    </h4>
                     <div className=' dispensers thumbnail'>
                         <div className='Grid flex-start'>
                             {dispensers}
@@ -45,14 +46,8 @@ var Journal = React.createClass({
             )
     },
     removeJournal: function () {
-        /*
-
-
-         <div className='thumbnail'>
-         {dispensers}
-         </div>
-         */
         DailyJournalActions.removeJournal(this.getJournal().fuel);
+        DailyJournalActions.getJournalDays(DatePickerStore.getDate());
     }
 });
 

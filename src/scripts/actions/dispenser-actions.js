@@ -5,7 +5,7 @@ var Actions = Reflux.createActions([
     "cancelEditDispenser",
     "showDispenserModal",
     "hideDispenserModal",
-    "removeDispenser" //based on the timestamp of the dispenser entry
+    "removeDispenser"
 
 ]);
 

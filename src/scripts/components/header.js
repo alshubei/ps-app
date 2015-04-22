@@ -8,14 +8,20 @@ var Dict = require('../components/common/dict.js');
 
 
 var header = React.createClass({
-
     render: function () {
         return (<div className={'component component-header navbar-fixed-top'} >
             <nav className="navbar navbar-default">
                 <div className="container-fluid">
-                        <div className='logged-user' dir={LangSwitcherStore.getDefaultDir()}>{Dict.tr('logged_as')}: {DailyJournalStore.getData().user.userId}</div>
+                    <div className='logged-user' dir={LangSwitcherStore.getDefaultDir()}>
+                        <div>
+                            {Dict.tr('logged_as')}:
+                            <span>{DailyJournalStore.getUser().userName}</span>
+                        </div>
+                        <div>
+                            <a className='logout-link' href={(DailyJournalStore.getUser().userId == -1 ? '' : 'login/logout.php') }>{Dict.tr('log_out')}</a>
+                        </div>
+                    </div>
                     <div className="navbar-header" >
-                        <br/>
                         <a className="navbar-brand navbar-left" href="#" >
                             <img alt="Brand" src={logo} />
                         </a>
@@ -25,6 +31,7 @@ var header = React.createClass({
         </div>
 
             )
+
     }
 });
 

@@ -9,18 +9,16 @@ var DailyJournalActions = require('../../actions/dailyjournal-actions.js');
 
 var Savejournals = React.createClass({
     render: function () {
-        var journalsData = DailyJournalStore.getJournals();
+        var journalsData = DailyJournalStore.makeJournals();
         var able = JournalResultsStore.getTotals(journalsData).notSaved > 0;
-        return (<span>
-                <button className={'btn btn-primary ' + (able ? ' ' : ' disabled')} onClick={this.handleSave}>
+        return (<button className={'btn btn-primary ' + (able ? ' ' : ' disabled')} onClick={this.handleSave}>
                     {Dict.tr('saveJournals')}
                 </button>
-            </span>
             )
 
     },
     handleSave: function () {
-        DailyJournalActions.saveJournalsInServer();
+        DailyJournalActions.saveJournals();
     }
 });
 
